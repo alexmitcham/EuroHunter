@@ -59,6 +59,7 @@
             font-size: 1.5em;
             font-weight: bold;
             text-align: center;
+			padding: 0 20px;
         }
 
         #guess-sequence {
@@ -135,35 +136,40 @@
             background-color: #0056b3;
         }
     
-        @media (max-width: 768px) {
-            #game-container {
-                width: 90%;
-                max-width: none;
-            }
+		@media (max-width: 768px) {
+			#game-container {
+				width: 90%;
+				max-width: none;
+			}
 
-            img[src="logo.png"] {
-                width: 120px;
-                margin-bottom: 5px;
-            }
+			img[src="logo.png"] {
+				width: 120px;
+				margin-bottom: 5px;
+			}
 
-            #question, #streak {
-                font-size: 1em;
-            }
+			#question {
+				font-size: 1em;
+				padding: 0 15px; /* Adjust padding for smaller screens */
+			}
 
-            #share-button {
-                font-size: 0.9em;
-                padding: 8px 16px;
-            }
+			#streak {
+				font-size: 0.9em;
+			}
 
-            #modal {
-                width: 90%;
-                padding: 15px;
-            }
+			#share-button {
+				font-size: 0.9em;
+				padding: 8px 16px;
+			}
 
-            #modal img {
-                max-width: 80%;
-            }
-        }
+			#modal {
+				width: 90%;
+				padding: 15px;
+			}
+
+			#modal img {
+				max-width: 80%;
+			}
+		}
     </style>
 </head>
 <body>
@@ -199,7 +205,7 @@
             },
             {
                 date: "2025-01-19",
-                clue: "This city was built on over 100 islands connected by canals.",
+                clue: "This city was built on over 100 islands connected by canals and relies on wooden foundations driven into the seabed.",
                 answer: "Venice",
                 correctSquare: [6, 5],
                 fact: "Venice is built on over 100 small islands in a lagoon in the Adriatic Sea."
@@ -385,12 +391,23 @@
             document.getElementById("modal").style.display = "none";
         }
 
-        shareButton.addEventListener("click", () => {
-            const shareText = `📍EuroHunter ${today_share}\n ${guessSequence.join('')} (${guesses})`;
-            navigator.clipboard.writeText(shareText)
-                .then(() => alert("Copied to clipboard!"))
-                .catch(err => console.error("Failed to copy: ", err));
-        });
+		shareButton.addEventListener("click", () => {
+			const shareText = `📍EuroHunter ${today_share}\n ${guessSequence.join('')} (${guesses})`;
+
+			if (navigator.share) {
+				navigator.share({
+					title: "EuroHunter",
+					text: shareText,
+					url: window.location.href,
+				})
+					.then(() => console.log("Shared successfully!"))
+					.catch((err) => console.error("Error sharing: ", err));
+			} else {
+				navigator.clipboard.writeText(shareText)
+					.then(() => alert("Copied to clipboard!"))
+					.catch((err) => console.error("Failed to copy: ", err));
+			}
+		});
     </script>
 </body>
 </html>
