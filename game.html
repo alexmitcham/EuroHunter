@@ -230,6 +230,10 @@
         const streakElement = document.getElementById("streak");
         const guessSequenceElement = document.getElementById("guess-sequence");
         const shareButton = document.getElementById("share-button");
+		
+		const gameContainer = document.getElementById('game-container');
+		gameContainer.style.height = `${gameContainer.offsetWidth}px`;
+
 
         let streak = parseInt(localStorage.getItem("streak")) || 0;
         let totalGuesses = parseInt(localStorage.getItem("totalGuesses")) || 0;
