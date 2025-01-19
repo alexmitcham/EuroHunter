@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EuroHunter</title>
+	<link rel="icon" href="icon.png" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'DM Sans', Arial, sans-serif;
+            background: url('wallpaper.jpg') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            cursor: url('cursor.png'), auto;
+        }
+
+        #game-container {
+            position: relative;
+            width: 45%;
+            max-width: 500px;
+            aspect-ratio: 1 / 1;
+            margin-bottom: 15px;
+            cursor: url('pin.png') 10 31, auto;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        #grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            grid-template-rows: repeat(12, 1fr);
+        }
+
+        .grid-square {
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            background-color: transparent;
+            cursor: inherit;
+        }
+
+        .grid-square:hover {
+            opacity: 0.8;
+        }
+
+        #question {
+            font-size: 1.5em;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        #guess-sequence {
+            margin-top: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+        }
+
+        #streak {
+            margin-top: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        #share-button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #00ab66;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #share-button:hover {
+            background-color: #218838;
+        }
+
+        /* Modal styling */
+        #modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            text-align: center;
+            z-index: 1000;
+        }
+
+        #modal img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        #modal button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #modal button:hover {
+            background-color: #0056b3;
+        }
+    
+        @media (max-width: 768px) {
+            #game-container {
+                width: 90%;
+                max-width: none;
+            }
+
+            img[src="logo.png"] {
+                width: 120px;
+                margin-bottom: 5px;
+            }
+
+            #question, #streak {
+                font-size: 1em;
+            }
+
+            #share-button {
+                font-size: 0.9em;
+                padding: 8px 16px;
+            }
+
+            #modal {
+                width: 90%;
+                padding: 15px;
+            }
+
+            #modal img {
+                max-width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <img src="logo.png" alt="Game Logo" style="margin-bottom: 0px; width: 150px;">
+    <div id="game-container">
+        <img id="map" src="map-of-europe-placeholder.jpg" alt="Map of Europe">
+        <div id="grid"></div>
+    </div>
+    <div id="question">Today's clue will appear here</div>
+    <div id="guess-sequence"> </div>
+    <div id="streak">Streak: 0 - Average Guesses: 0</div>
+
+    <!-- Modal for correct answer -->
+    <div id="overlay"></div>
+    <div id="modal">
+        <h2 id="modal-title">The mystery city is <span id="city-name"></span>!</h2>
+        <img id="modal-image" src="" alt="City Image">
+        <p id="modal-fact"></p>
+        <a id="modal-link" href="" target="_blank">Learn more on Wikipedia</a>
+        <br>
+        <button id="share-button" style="margin-top: 10px;">Share</button>
+        <button onclick="closeModal()" style="margin-top: 10px;">Close</button>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                date: "2025-01-18",
+                clue: "The capital of Germany.",
+                answer: "Berlin",
+                correctSquare: [6, 8],
+                fact: "Berlin is known for its art scene and modern landmarks like the Berlin Wall's graffiti-covered remains."
+            },
+            {
+                date: "2025-01-19",
+                clue: "The city of canals and gondolas.",
+                answer: "Venice",
+                correctSquare: [6, 5],
+                fact: "Venice is built on over 100 small islands in a lagoon in the Adriatic Sea."
+            }
+        ];
+
+        const gridContainer = document.getElementById("grid");
+        const questionElement = document.getElementById("question");
+        const streakElement = document.getElementById("streak");
+        const guessSequenceElement = document.getElementById("guess-sequence");
+        const shareButton = document.getElementById("share-button");
+
+        let streak = parseInt(localStorage.getItem("streak")) || 0;
+        let totalGuesses = parseInt(localStorage.getItem("totalGuesses")) || 0;
+        let totalGames = parseInt(localStorage.getItem("totalGames")) || 0;
+        let completedDate = localStorage.getItem("completedDate") || null;
+
+		const today = new Date().toISOString().split('T')[0];
+		
+        const today_share = new Date().toLocaleDateString('en-GB', {
+		day: '2-digit',
+		month: 'short',
+		year: '2-digit'
+		}).replace(/ /g, ' ');
+
+        let guessSequence = [];
+
+        function updateGuessSequenceDisplay() {
+            guessSequenceElement.textContent = `${guessSequence.join(' ')}`;
+        }
+
+        function saveGridState() {
+            const gridState = [];
+            document.querySelectorAll(".grid-square").forEach(square => {
+                gridState.push({
+                    row: square.dataset.row,
+                    col: square.dataset.col,
+                    color: square.style.backgroundColor || "transparent"
+                });
+            });
+            localStorage.setItem("gridState", JSON.stringify(gridState));
+        }
+
+        function loadGridState() {
+            const gridState = JSON.parse(localStorage.getItem("gridState")) || [];
+            gridState.forEach(({ row, col, color }) => {
+                const square = document.querySelector(`.grid-square[data-row='${row}'][data-col='${col}']`);
+                if (square) {
+                    square.style.backgroundColor = color;
+                }
+            });
+        }
+
+        function displayModalFromStorage() {
+            const completedAnswer = localStorage.getItem("completedAnswer");
+            const completedFact = localStorage.getItem("completedFact");
+            const completedImage = localStorage.getItem("completedImage");
+
+            if (completedAnswer && completedFact && completedImage) {
+                showModal(completedAnswer, completedFact, completedImage);
+            }
+        }
+
+        if (completedDate === today) {
+            loadGridState();
+            displayModalFromStorage();
+            questionElement.textContent = questions.find(q => q.date === today)?.clue || "No question available.";
+            streakElement.textContent = `Streak: ${streak} - Average Guesses: ${totalGames > 0 ? (totalGuesses / totalGames).toFixed(2) : 0}`;
+            gridContainer.style.pointerEvents = "none";
+        } else {
+            const todaysQuestion = getTodaysQuestion();
+
+            if (todaysQuestion && todaysQuestion.clue) {
+                questionElement.textContent = todaysQuestion.clue;
+            } else {
+                questionElement.textContent = "No question for today. Check back tomorrow!";
+            }
+
+            streakElement.textContent = `Streak: ${streak} - Average Guesses: ${totalGames > 0 ? (totalGuesses / totalGames).toFixed(2) : 0}`;
+
+            for (let row = 0; row < 12; row++) {
+                for (let col = 0; col < 12; col++) {
+                    const square = document.createElement("div");
+                    square.classList.add("grid-square");
+                    square.dataset.row = row;
+                    square.dataset.col = col;
+                    gridContainer.appendChild(square);
+
+                    square.addEventListener("click", () => handleSquareClick(row, col));
+                }
+            }
+        }
+
+        function getTodaysQuestion() {
+            return questions.find(q => q.date === today);
+        }
+
+        let guesses = 0;
+
+        async function handleSquareClick(row, col) {
+            const question = getTodaysQuestion();
+            if (!question) return;
+
+            const [correctRow, correctCol] = question.correctSquare;
+            const distance = Math.sqrt((row - correctRow) ** 2 + (col - correctCol) ** 2);
+            const maxDistance = Math.sqrt(6 ** 2 + 6 ** 2);
+            const intensity = 1 - (distance / maxDistance);
+
+            const clickedSquare = document.querySelector(`.grid-square[data-row='${row}'][data-col='${col}']`);
+
+            const r = Math.round(245);
+            const g = Math.round(175 + (39 - 175) * intensity);
+            const b = Math.round(25 + (17 - 25) * intensity);
+
+            clickedSquare.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+
+            guesses++;
+
+            if (distance > 1.5) {
+                guessSequence.push("🟨");
+            } else if (distance > 0.8) {
+                guessSequence.push("🟧");
+            } else {
+                guessSequence.push("🟥");
+            }
+
+            updateGuessSequenceDisplay();
+            saveGridState();
+
+            if (row === correctRow && col === correctCol) {
+                clickedSquare.style.backgroundColor = "#c11f0e";
+                saveGridState();
+
+                const imageUrl = await fetchWikipediaImage(question.answer);
+                streak = parseInt(streak) + 1;
+                totalGuesses = parseInt(totalGuesses) + guesses;
+                totalGames = parseInt(totalGames) + 1;
+                completedDate = today;
+                localStorage.setItem("streak", streak);
+                localStorage.setItem("totalGuesses", totalGuesses);
+                localStorage.setItem("totalGames", totalGames);
+                localStorage.setItem("completedDate", completedDate);
+                localStorage.setItem("completedAnswer", question.answer);
+                localStorage.setItem("completedFact", question.fact);
+                localStorage.setItem("completedImage", imageUrl);
+                streakElement.textContent = `Streak: ${streak} - Average Guesses: ${(totalGuesses / totalGames).toFixed(2)}`;
+                showModal(question.answer, question.fact, imageUrl);
+                gridContainer.style.pointerEvents = "none";
+            }
+        }
+
+        async function fetchWikipediaImage(city) {
+            try {
+                const response = await fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(city)}&prop=pageimages&format=json&pithumbsize=500&origin=*`);
+                const data = await response.json();
+                const pages = data.query.pages;
+                const page = Object.values(pages)[0];
+                return page.thumbnail ? page.thumbnail.source : "placeholder.jpg";
+            } catch (error) {
+                console.error("Failed to fetch image:", error);
+                return "placeholder.jpg";
+            }
+        }
+
+        function showModal(city, fact, imageUrl) {
+            document.getElementById("city-name").textContent = city;
+            document.getElementById("modal-fact").textContent = fact;
+            document.getElementById("modal-image").src = imageUrl;
+            document.getElementById("modal-link").href = `https://en.wikipedia.org/wiki/${encodeURIComponent(city)}`;
+            document.getElementById("overlay").style.display = "block";
+            document.getElementById("modal").style.display = "block";
+        }
+
+        function closeModal() {
+            document.getElementById("overlay").style.display = "none";
+            document.getElementById("modal").style.display = "none";
+        }
+
+        shareButton.addEventListener("click", () => {
+            const shareText = `📍EuroHunter ${today_share}\n ${guessSequence.join('')} (${guesses})`;
+            navigator.clipboard.writeText(shareText)
+                .then(() => alert("Copied to clipboard!"))
+                .catch(err => console.error("Failed to copy: ", err));
+        });
+    </script>
+</body>
+</html>
