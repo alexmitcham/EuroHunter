@@ -289,19 +289,33 @@
                 }
             });
         }
+		
+		function loadSequence() {
+			const savedSequence = JSON.parse(localStorage.getItem("guessSequence")) || [];
+			const savedGuesses = parseInt(localStorage.getItem("guessCount")) || 0;
 
-        function displayModalFromStorage() {
-            const completedAnswer = localStorage.getItem("completedAnswer");
-            const completedFact = localStorage.getItem("completedFact");
-            const completedImage = localStorage.getItem("completedImage");
+			guessSequence = savedSequence;
+			guesses = savedGuesses;
 
-            if (completedAnswer && completedFact && completedImage) {
-                showModal(completedAnswer, completedFact, completedImage);
-            }
-        }
+			updateGuessSequenceDisplay();
+		}
+
+		
+		function displayModalFromStorage() {
+			const completedAnswer = localStorage.getItem("completedAnswer");
+			const completedFact = localStorage.getItem("completedFact");
+			const completedImage = localStorage.getItem("completedImage");
+
+			if (completedAnswer && completedFact && completedImage) {
+				loadSequence(); // Load sequence and guess count
+				showModal(completedAnswer, completedFact, completedImage);
+			}
+		}
+
 
         if (completedDate === today) {
             loadGridState();
+			loadSequence(); 
             displayModalFromStorage();
             questionElement.textContent = questions.find(q => q.date === today)?.clue || "No question available.";
             streakElement.textContent = `Streak: ${streak} - Average Guesses: ${totalGames > 0 ? (totalGuesses / totalGames).toFixed(2) : 0}`;
@@ -382,6 +396,8 @@
                 localStorage.setItem("completedAnswer", question.answer);
                 localStorage.setItem("completedFact", question.fact);
                 localStorage.setItem("completedImage", imageUrl);
+				localStorage.setItem("guessSequence", JSON.stringify(guessSequence));
+				localStorage.setItem("guessCount", guesses); // Save the total guesses as well
                 streakElement.textContent = `Streak: ${streak} - Average Guesses: ${(totalGuesses / totalGames).toFixed(2)}`;
                 showModal(question.answer, question.fact, imageUrl);
                 gridContainer.style.pointerEvents = "none";
@@ -414,9 +430,12 @@
             document.getElementById("overlay").style.display = "none";
             document.getElementById("modal").style.display = "none";
         }
-
+		
 		shareButton.addEventListener("click", () => {
-			const shareText = `📍EuroHunter ${today_share}\n ${guessSequence.join('')} (${guesses})`;
+			const savedSequence = JSON.parse(localStorage.getItem("guessSequence")) || [];
+			const savedGuesses = parseInt(localStorage.getItem("guessCount")) || 0;
+
+			const shareText = `📍EuroHunter ${today_share}\n ${savedSequence.join('')} (${savedGuesses})`;
 
 			if (navigator.share) {
 				navigator.share({
@@ -432,6 +451,7 @@
 					.catch((err) => console.error("Failed to copy: ", err));
 			}
 		});
+
     </script>
 </body>
 </html>
