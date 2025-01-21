@@ -203,7 +203,7 @@
     <script>
         const questions = [
             {
-                date: "2025-01-21",
+                date: "2025-01-18",
                 clue: "The capital of Germany.",
                 answer: "Berlin",
                 correctSquare: [6, 8],
@@ -222,7 +222,21 @@
                 answer: "Florence",
                 correctSquare: [6, 4],
                 fact: "We all know Bella Roma as Italy’s current capital, but that was not always the case. Before Rome was considered to be Italy’s capital, Florence took the title. "
-            }
+            },
+			{
+				"date": "2025-01-21",
+				"clue": "This city's Mirabell Gardens were used in the famous 'Do-Re-Mi' scene from 'The Sound of Music.'",
+				"answer": "Salzburg",
+				"correctSquare": [6, 5],
+				"fact": "Salzburg is the birthplace of Wolfgang Amadeus Mozart, one of the world's greatest composers. His house, No. 9 Getreidegasse, is now a museum!"
+			},
+			{
+				date: "2025-01-22",
+				clue: "Smokiecoco took both the train and the M54 from Telf to link a ting in this city",
+				answer: "Birmingham",
+				correctSquare: [4, 11],
+				fact: "There are no fun facts about Birmingham"
+			}
         ];
 
         const gridContainer = document.getElementById("grid");
@@ -408,7 +422,7 @@
 				navigator.share({
 					title: "EuroHunter",
 					text: shareText,
-					url: window.location.href,
+					url: window.location.href = "index.html",
 				})
 					.then(() => console.log("Shared successfully!"))
 					.catch((err) => console.error("Error sharing: ", err));
