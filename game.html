@@ -234,7 +234,7 @@
 				date: "2025-01-22",
 				clue: "Smokiecoco took both the train and the M54 from Telf to link a ting in this city",
 				answer: "Birmingham",
-				correctSquare: [4, 3],
+				correctSquare: [4, 8],
 				fact: "There are no fun facts about Birmingham"
 			}
         ];
@@ -248,7 +248,7 @@
 		const gameContainer = document.getElementById('game-container');
 		gameContainer.style.height = `${gameContainer.offsetWidth}px`;
 
-
+		let guesses = 0;
         let streak = parseInt(localStorage.getItem("streak")) || 0;
         let totalGuesses = parseInt(localStorage.getItem("totalGuesses")) || 0;
         let totalGames = parseInt(localStorage.getItem("totalGames")) || 0;
@@ -290,16 +290,15 @@
             });
         }
 		
+
 		function loadSequence() {
 			const savedSequence = JSON.parse(localStorage.getItem("guessSequence")) || [];
-			const savedGuesses = parseInt(localStorage.getItem("guessCount")) || 0;
-
+			guesses = parseInt(localStorage.getItem("guessCount")) || 0; // Ensure guesses is loaded correctly
 			guessSequence = savedSequence;
-			guesses = savedGuesses;
 
 			updateGuessSequenceDisplay();
 		}
-
+		
 		function displayModalFromStorage() {
 			const completedAnswer = localStorage.getItem("completedAnswer");
 			const completedFact = localStorage.getItem("completedFact");
