@@ -290,14 +290,14 @@
             });
         }
 		
-
 		function loadSequence() {
 			const savedSequence = JSON.parse(localStorage.getItem("guessSequence")) || [];
-			guesses = parseInt(localStorage.getItem("guessCount")) || 0; // Ensure guesses is loaded correctly
+			guesses = parseInt(localStorage.getItem("guessCount")) || 0; // Update the global `guesses` variable
 			guessSequence = savedSequence;
 
 			updateGuessSequenceDisplay();
 		}
+
 		
 		function displayModalFromStorage() {
 			const completedAnswer = localStorage.getItem("completedAnswer");
@@ -381,7 +381,7 @@
 
 			clickedSquare.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
 
-			// Increment guesses
+			// Increment the global `guesses` variable (no re-declaration here)
 			guesses++;
 
 			if (distance > 1.5) {
@@ -400,9 +400,9 @@
 				saveGridState();
 
 				const imageUrl = await fetchWikipediaImage(question.answer);
-				streak = parseInt(streak) + 1;
-				totalGuesses = parseInt(totalGuesses) + guesses;
-				totalGames = parseInt(totalGames) + 1;
+				streak++;
+				totalGuesses += guesses;
+				totalGames++;
 				completedDate = today;
 				localStorage.setItem("streak", streak);
 				localStorage.setItem("totalGuesses", totalGuesses);
@@ -412,12 +412,13 @@
 				localStorage.setItem("completedFact", question.fact);
 				localStorage.setItem("completedImage", imageUrl);
 				localStorage.setItem("guessSequence", JSON.stringify(guessSequence));
-				localStorage.setItem("guessCount", guesses); // Save guesses globally
+				localStorage.setItem("guessCount", guesses);
 				streakElement.textContent = `Streak: ${streak} - Average Guesses: ${(totalGuesses / totalGames).toFixed(2)}`;
 				showModal(question.answer, question.fact, imageUrl);
 				gridContainer.style.pointerEvents = "none";
 			}
 		}
+
         async function fetchWikipediaImage(city) {
             try {
                 const response = await fetch(`https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(city)}&prop=pageimages&format=json&pithumbsize=500&origin=*`);
