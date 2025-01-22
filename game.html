@@ -300,11 +300,17 @@
 			updateGuessSequenceDisplay();
 		}
 
-		
 		function displayModalFromStorage() {
 			const completedAnswer = localStorage.getItem("completedAnswer");
 			const completedFact = localStorage.getItem("completedFact");
 			const completedImage = localStorage.getItem("completedImage");
+
+			console.log("Local Storage Values for Modal:", {
+				completedAnswer,
+				completedFact,
+				completedImage,
+				completedDate: localStorage.getItem("completedDate")
+			});
 
 			if (completedAnswer && completedFact && completedImage) {
 				loadSequence(); // Load sequence and guess count
@@ -321,7 +327,11 @@
             streakElement.textContent = `Streak: ${streak} - Average Guesses: ${totalGames > 0 ? (totalGuesses / totalGames).toFixed(2) : 0}`;
             gridContainer.style.pointerEvents = "none";
         } else {
-            const todaysQuestion = getTodaysQuestion();
+			const todaysQuestion = getTodaysQuestion();
+			if (todaysQuestion) {
+				console.log(`Today's Question: ${todaysQuestion.clue}`);
+				console.log(`Today's Correct Square: Row ${todaysQuestion.correctSquare[0]}, Col ${todaysQuestion.correctSquare[1]}`);
+			}
 
             if (todaysQuestion && todaysQuestion.clue) {
                 questionElement.textContent = todaysQuestion.clue;
@@ -331,17 +341,21 @@
 
             streakElement.textContent = `Streak: ${streak} - Average Guesses: ${totalGames > 0 ? (totalGuesses / totalGames).toFixed(2) : 0}`;
 
-            for (let row = 0; row < 12; row++) {
-                for (let col = 0; col < 12; col++) {
-                    const square = document.createElement("div");
-                    square.classList.add("grid-square");
-                    square.dataset.row = row;
-                    square.dataset.col = col;
-                    gridContainer.appendChild(square);
+			for (let row = 0; row < 12; row++) {
+				for (let col = 0; col < 12; col++) {
+					const square = document.createElement("div");
+					square.classList.add("grid-square");
+					square.dataset.row = row;
+					square.dataset.col = col;
+					gridContainer.appendChild(square);
 
-                    square.addEventListener("click", () => handleSquareClick(row, col));
-                }
-            }
+					square.addEventListener("click", () => handleSquareClick(row, col));
+				}
+			}
+			// Log all grid squares created
+			document.querySelectorAll('.grid-square').forEach(square => {
+				console.log(`Grid Square: Row ${square.dataset.row}, Col ${square.dataset.col}`);
+			});
         }
 
         function getTodaysQuestion() {
@@ -417,14 +431,16 @@
             }
         }
 
-        function showModal(city, fact, imageUrl) {
-            document.getElementById("city-name").textContent = city;
-            document.getElementById("modal-fact").textContent = fact;
-            document.getElementById("modal-image").src = imageUrl;
-            document.getElementById("modal-link").href = `https://en.wikipedia.org/wiki/${encodeURIComponent(city)}`;
-            document.getElementById("overlay").style.display = "block";
-            document.getElementById("modal").style.display = "block";
-        }
+		function showModal(city, fact, imageUrl) {
+			console.log("Displaying Modal with:", { city, fact, imageUrl });
+			document.getElementById("city-name").textContent = city;
+			document.getElementById("modal-fact").textContent = fact;
+			document.getElementById("modal-image").src = imageUrl;
+			document.getElementById("modal-link").href = `https://en.wikipedia.org/wiki/${encodeURIComponent(city)}`;
+			document.getElementById("overlay").style.display = "block";
+			document.getElementById("modal").style.display = "block";
+		}
+
 
         function closeModal() {
             document.getElementById("overlay").style.display = "none";
