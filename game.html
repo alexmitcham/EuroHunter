@@ -482,7 +482,7 @@
 			} else {
 				try {
 					// Fallback: Copy the share text to clipboard for desktop/laptops
-					await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
+					await navigator.clipboard.writeText(`${shareText}\nhttps://alexmitcham.github.io/EuroHunter/`);
 					alert("Copied to clipboard!");
 				} catch (err) {
 					console.error("Failed to copy: ", err);
