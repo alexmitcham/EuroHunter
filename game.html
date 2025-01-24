@@ -308,10 +308,10 @@
 		gameContainer.style.height = `${gameContainer.offsetWidth}px`;
 
 		let guesses = 0;
-        let streak = parseInt(localStorage.getItem("${region}_streak")) || 0;
-        let totalGuesses = parseInt(localStorage.getItem("{region}_totalGuesses")) || 0;
-        let totalGames = parseInt(localStorage.getItem("{region}_totalGames")) || 0;
-        let completedDate = localStorage.getItem("{region}_completedDate") || null;
+        let streak = parseInt(localStorage.getItem(`${region}_streak`)) || 0;
+        let totalGuesses = parseInt(localStorage.getItem(`${region}_totalGuesses`)) || 0;
+        let totalGames = parseInt(localStorage.getItem(`${region}_totalGames`)) || 0;
+        let completedDate = localStorage.getItem(`${region}_completedDate`) || null;
 
 		const today = new Date().toISOString().split('T')[0];
 		
@@ -336,11 +336,11 @@
                     color: square.style.backgroundColor || "transparent"
                 });
             });
-            localStorage.setItem("{region}_gridState", JSON.stringify(gridState));
+            localStorage.setItem(`${region}_gridState`, JSON.stringify(gridState));
         }
 
         function loadGridState() {
-            const gridState = JSON.parse(localStorage.getItem("{region}_gridState")) || [];
+            const gridState = JSON.parse(localStorage.getItem(`${region}_gridState`)) || [];
             gridState.forEach(({ row, col, color }) => {
                 const square = document.querySelector(`.grid-square[data-row='${row}'][data-col='${col}']`);
                 if (square) {
@@ -350,8 +350,8 @@
         }
 		
 		function loadSequence() {
-			const savedSequence = JSON.parse(localStorage.getItem("{region}_guessSequence")) || [];
-			guesses = parseInt(localStorage.getItem("{region}_guessCount")) || 0; // Update the global `guesses` variable
+			const savedSequence = JSON.parse(localStorage.getItem(`${region}_guessSequence`)) || [];
+			guesses = parseInt(localStorage.getItem(`${region}_guessCount`)) || 0; // Update the global `guesses` variable
 			guessSequence = savedSequence;
 
 			updateGuessSequenceDisplay();
@@ -359,15 +359,15 @@
 
 		
 		function displayModalFromStorage() {
-			const completedAnswer = localStorage.getItem("{region}_completedAnswer");
-			const completedFact = localStorage.getItem("{region}_completedFact");
-			const completedImage = localStorage.getItem("{region}_completedImage");
+			const completedAnswer = localStorage.getItem(`${region}_completedAnswer`);
+			const completedFact = localStorage.getItem(`${region}_completedFact`);
+			const completedImage = localStorage.getItem(`${region}_completedImage`);
 
 			console.log("Local Storage Values for Modal:", {
 				completedAnswer,
 				completedFact,
 				completedImage,
-				completedDate: localStorage.getItem("{region}_completedDate")
+				completedDate: localStorage.getItem(`${region}_completedDate`)
 			});
 
 			if (completedAnswer && completedFact && completedImage) {
@@ -386,11 +386,6 @@
             gridContainer.style.pointerEvents = "none";
         } else {
 			const todaysQuestion = getTodaysQuestion(regionQuestions);
-			if (todaysQuestion && todaysQuestion.clue) {
-				questionElement.textContent = todaysQuestion.clue;
-			}
-
-
             if (todaysQuestion && todaysQuestion.clue) {
                 questionElement.textContent = todaysQuestion.clue;
             } else {
@@ -425,7 +420,7 @@
 
 		// Inside handleSquareClick, use the global 'guesses' variable:
 		async function handleSquareClick(row, col) {
-			const question = getTodaysQuestion();
+			const question = getTodaysQuestion(regionQuestions);
 			if (!question) return;
 
 			const [correctRow, correctCol] = question.correctSquare;
@@ -466,15 +461,15 @@
 				totalGuesses += guesses;
 				totalGames++;
 				completedDate = today;
-				localStorage.setItem("{region}_streak", streak);
-				localStorage.setItem("{region}_totalGuesses", totalGuesses);
-				localStorage.setItem("{region}_totalGames", totalGames);
-				localStorage.setItem("{region}_completedDate", completedDate);
-				localStorage.setItem("{region}_completedAnswer", question.answer);
-				localStorage.setItem("{region}_completedFact", question.fact);
-				localStorage.setItem("{region}_completedImage", imageUrl);
-				localStorage.setItem("{region}_guessSequence", JSON.stringify(guessSequence));
-				localStorage.setItem("{region}_guessCount", guesses);
+				localStorage.setItem(`${region}_streak`, streak);
+				localStorage.setItem(`${region}_totalGuesses`, totalGuesses);
+				localStorage.setItem(`${region}_totalGames`, totalGames);
+				localStorage.setItem(`${region}_completedDate`, completedDate);
+				localStorage.setItem(`${region}_completedAnswer`, question.answer);
+				localStorage.setItem(`${region}_completedFact`, question.fact);
+				localStorage.setItem(`${region}_completedImage`, imageUrl);
+				localStorage.setItem(`${region}_guessSequence`, JSON.stringify(guessSequence));
+				localStorage.setItem(`${region}_guessCount`, guesses);
 				streakElement.textContent = `Streak: ${streak} - Average Guesses: ${(totalGuesses / totalGames).toFixed(2)}`;
 				showModal(question.answer, question.fact, imageUrl);
 				gridContainer.style.pointerEvents = "none";
@@ -512,8 +507,8 @@
 		
 
 		shareButton.addEventListener("click", async () => {
-			const savedSequence = JSON.parse(localStorage.getItem("{region}_guessSequence")) || [];
-			const savedGuesses = parseInt(localStorage.getItem("{region}_guessCount")) || 0;
+			const savedSequence = JSON.parse(localStorage.getItem(`${region}_guessSequence`)) || [];
+			const savedGuesses = parseInt(localStorage.getItem(`${region}_guessCount`)) || 0;
 
 			const shareText = `📍EuroHunter ${today_share}\n ${savedSequence.join('')} (${savedGuesses})`;
 			const shareUrl = "index.html";
