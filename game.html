@@ -396,20 +396,15 @@
 			}
 		}
 
-
-        if (completedDate === today) {
-            loadGridState();
-			loadSequence(); 
-            displayModalFromStorage();
-            questionElement.textContent = regionQuestions.find(q => q.date === today)?.clue || "No question available.";
-            streakElement.textContent = `Streak: ${streak} - Average Guesses: ${totalGames > 0 ? (totalGuesses / totalGames).toFixed(2) : 0}`;
-			if (completedDate === today) {
-				gridContainer.style.pointerEvents = "none";
-			} else {
-				gridContainer.style.pointerEvents = "auto"; // Enable interactions for a new game
-			}
-
-        } else {
+		if (completedDate === today) {
+			loadGridState();
+			loadSequence();
+			displayModalFromStorage();
+			questionElement.textContent = regionQuestions.find(q => q.date === today)?.clue || "No question available.";
+			streakElement.textContent = `Streak: ${streak} - Average Guesses: ${totalGames > 0 ? (totalGuesses / totalGames).toFixed(2) : 0}`;
+			gridContainer.style.pointerEvents = "none";
+		} else {
+			const todaysQuestion = getTodaysQuestion(regionQuestions);
 			if (!regionQuestions || regionQuestions.length === 0) {
 				questionElement.textContent = "No questions available for this region.";
 				gridContainer.style.pointerEvents = "none"; // Disable grid interactions
@@ -419,7 +414,7 @@
 				questionElement.textContent = "No question for today. Check back tomorrow!";
 			}
 
-            streakElement.textContent = `Streak: ${streak} - Average Guesses: ${totalGames > 0 ? (totalGuesses / totalGames).toFixed(2) : 0}`;
+			streakElement.textContent = `Streak: ${streak} - Average Guesses: ${totalGames > 0 ? (totalGuesses / totalGames).toFixed(2) : 0}`;
 
 			// Clear existing grid squares
 			gridContainer.innerHTML = "";
@@ -436,7 +431,6 @@
 			}
 
 			// Add click listener to the entire grid container (event delegation)
-			// Ensure this is not duplicated during reloads
 			if (!gridContainer.hasEventListener) {
 				gridContainer.addEventListener("click", (e) => {
 					const square = e.target.closest(".grid-square");
@@ -448,12 +442,11 @@
 				gridContainer.hasEventListener = true; // Prevent duplicate listeners
 			}
 
-
 			// Log all grid squares created
 			document.querySelectorAll('.grid-square').forEach(square => {
 				console.log(`Grid Square: Row ${square.dataset.row}, Col ${square.dataset.col}`);
 			});
-        }
+		}
 
 
 		function getTodaysQuestion(regionQuestions) {
