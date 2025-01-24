@@ -456,6 +456,7 @@
             document.getElementById("modal").style.display = "none";
         }
 		
+
 		shareButton.addEventListener("click", async () => {
 			const savedSequence = JSON.parse(localStorage.getItem("guessSequence")) || [];
 			const savedGuesses = parseInt(localStorage.getItem("guessCount")) || 0;
@@ -463,9 +464,12 @@
 			const shareText = `📍EuroHunter ${today_share}\n ${savedSequence.join('')} (${savedGuesses})`;
 			const shareUrl = "index.html";
 
-			if (navigator.share) {
+			// Check if the user is on a mobile device
+			const isMobile = /iPhone|iPad|iPod|Android|webOS|BlackBerry|Windows Phone/i.test(navigator.userAgent);
+
+			if (isMobile && navigator.share) {
 				try {
-					// Try sharing using the `navigator.share` API
+					// Use the native sharing functionality for mobile devices
 					await navigator.share({
 						title: "EuroHunter",
 						text: shareText,
@@ -473,11 +477,11 @@
 					});
 					console.log("Shared successfully!");
 				} catch (err) {
-					console.error("Error sharing: ", err);
+					console.error("Error sharing on mobile: ", err);
 				}
 			} else {
-				// Fallback: Copy to clipboard
 				try {
+					// Fallback: Copy the share text to clipboard for desktop/laptops
 					await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
 					alert("Copied to clipboard!");
 				} catch (err) {
