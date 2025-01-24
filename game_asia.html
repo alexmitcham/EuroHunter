@@ -218,14 +218,14 @@
 </head>
 <body>
     <div id="emoji-links">
-        <a href="game.html" title="Europe 🌍">🌍</a>
-        <a href="game_americas.html" title="Americas 🌎">🌎</a>
-        <a href="game_africa.html" title="Africa 🌍">🌍</a>
-        <a href="index.html" title="Help ❓">❓</a>
+	    	<a href="game.html" title="Europe 🌍" aria-label="Play Europe Region">🌍</a>
+		<a href="game_americas.html" title="Americas 🌎" aria-label="Play Americas Region">🌎</a>
+		<a href="game_africa.html" title="Africa 🌍" aria-label="Play Africa Region">🌍</a>
+		<a href="game_asia.html" title="Asia 🌎" aria-label="Play Asia Region">🌏</a>
     </div>
     <img src="logo.png" alt="Game Logo" style="margin-bottom: 0px; width: 150px;">
     <div id="game-container">
-        <img id="map" src="asia_map.png" alt="Map of Asia">
+        <img id="map" alt="Map of Asia">
         <div id="grid"></div>
     </div>
     <div id="question">Today's clue will appear here</div>
@@ -245,65 +245,142 @@
     </div>
 
     <script>
-        const questions = [
-            {
-                date: "2025-01-18",
-                clue: "The capital of Germany.",
-                answer: "Berlin",
-                correctSquare: [6, 8],
-                fact: "Berlin is known for its art scene and modern landmarks like the Berlin Wall's graffiti-covered remains."
-            },
-            {
-                date: "2025-01-19",
-                clue: "This city was built on over 100 islands connected by canals and relies on wooden foundations driven into the seabed.",
-                answer: "Venice",
-                correctSquare: [6, 5],
-                fact: "Venice is built on over 100 small islands in a lagoon in the Adriatic Sea."
-            },
-			{
-			    date: "2025-01-20",
-                clue: "This city is home to Michelangelo’s famous marble sculpture of David, standing in the heart of the Renaissance.",
-                answer: "Florence",
-                correctSquare: [6, 4],
-                fact: "We all know Bella Roma as Italy’s current capital, but that was not always the case. Before Rome was considered to be Italy’s capital, Florence took the title. "
-            },
-			{
-				"date": "2025-01-21",
-				"clue": "This city's Mirabell Gardens were used in the famous 'Do-Re-Mi' scene from 'The Sound of Music.'",
-				"answer": "Salzburg",
-				"correctSquare": [6, 5],
-				"fact": "Salzburg is the birthplace of Wolfgang Amadeus Mozart, one of the world's greatest composers. His house, No. 9 Getreidegasse, is now a museum!"
-			},
-			{
-				date: "2025-01-22",
-				clue: "Smokiecoco took both the train and the M54 from Telf to link a ting in this city",
-				answer: "Birmingham",
-				correctSquare: [4, 3],
-				fact: "There are no fun facts about Birmingham"
-			},
-			{
-				"date": "2025-01-24",
-				"clue": "This city is home to a harbour that is a UNESCO World Heritage site.",
-				"answer": "Hamburg",
-				"correctSquare": [4, 5],
-				"fact": "The German city of Hamburg has more bridges than Amsterdam and Venice combined."
-			}
-        ];
+		const region = "asia"; 
+		document.getElementById("map").src = `${region}_map.png`;
+        const questions = {
+			europe: [
+				{
+					date: "2025-01-19",
+					clue: "This city was built on over 100 islands connected by canals and relies on wooden foundations driven into the seabed.",
+					answer: "Venice",
+					correctSquare: [6, 5],
+					fact: "Venice is built on over 100 small islands in a lagoon in the Adriatic Sea."
+				},
+				{
+					date: "2025-01-20",
+					clue: "This city is home to Michelangelo’s famous marble sculpture of David, standing in the heart of the Renaissance.",
+					answer: "Florence",
+					correctSquare: [6, 4],
+					fact: "We all know Bella Roma as Italy’s current capital, but that was not always the case. Before Rome was considered to be Italy’s capital, Florence took the title. "
+				},
+				{
+					"date": "2025-01-21",
+					"clue": "This city's Mirabell Gardens were used in the famous 'Do-Re-Mi' scene from 'The Sound of Music.'",
+					"answer": "Salzburg",
+					"correctSquare": [6, 5],
+					"fact": "Salzburg is the birthplace of Wolfgang Amadeus Mozart, one of the world's greatest composers. His house, No. 9 Getreidegasse, is now a museum!"
+				},
+				{
+					date: "2025-01-22",
+					clue: "Smokiecoco took both the train and the M54 from Telf to link a ting in this city",
+					answer: "Birmingham",
+					correctSquare: [4, 3],
+					fact: "There are no fun facts about Birmingham"
+				},
+				{
+					"date": "2025-01-24",
+					"clue": "This city is home to a harbour that is a UNESCO World Heritage site.",
+					"answer": "Hamburg",
+					"correctSquare": [5, 5],
+					"fact": "The German city of Hamburg has more bridges than Amsterdam and Venice combined."
+				}
+			],
+			africa: [
+				{
+					date: "2025-01-25",
+					clue: "This city is home to the ancient Lighthouse, one of the Seven Wonders of the Ancient World.",
+					answer: "Alexandria",
+					correctSquare: [5, 4],
+					fact: "This city was once one of the largest in the ancient world and a centre of learning and culture."
+				},
+				{
+					date: "2025-01-26",
+					clue: "This city is known as the 'Gateway to Africa' and boasts a majestic mountain overlooking it.",
+					answer: "Cape Town",
+					correctSquare: [6, 6],
+					fact: "It is the oldest city in its country and is famous for its stunning natural scenery."
+				},
+				{
+					date: "2025-01-27",
+					clue: "This city is nicknamed the 'Green City in the Sun' and is a hub for wildlife safaris.",
+					answer: "Nairobi",
+					correctSquare: [4, 5],
+					fact: "It is the only city in the world with a national park on its border, home to lions, giraffes, and rhinos."
+				},
+				{
+					date: "2025-01-28",
+					clue: "This bustling city is the largest on the continent and is known for its vibrant music and film industries.",
+					answer: "Lagos",
+					correctSquare: [3, 6],
+					fact: "This city is the heart of one of the largest film industries in the world, producing hundreds of films annually."
+				},
+				{
+					date: "2025-01-29",
+					clue: "This city, famous for its blue-washed streets, is nicknamed the 'Blue Pearl.'",
+					answer: "Chefchaouen",
+					correctSquare: [6, 3],
+					fact: "Its buildings were originally painted blue to symbolise spirituality, a tradition that continues to attract visitors."
+				}
+			],
+			asia: [
+				{
+					date: "2025-01-30",
+					clue: "This city is famous for its towering skyline and its role as a global financial hub.",
+					answer: "Hong Kong",
+					correctSquare: [4, 5],
+					fact: "This city has more skyscrapers than any other city in the world and is known for its vibrant harbour."
+				},
+				{
+					date: "2025-01-31",
+					clue: "This city is nicknamed the 'City of Lakes' due to its numerous beautiful lakes scattered throughout.",
+					answer: "Udaipur",
+					correctSquare: [6, 4],
+					fact: "This city is known for its stunning palaces, including one that appears to float on the water."
+				},
+				{
+					date: "2025-02-01",
+					clue: "This city is home to one of the world's busiest fish markets and an iconic tower resembling a rocket.",
+					answer: "Tokyo",
+					correctSquare: [5, 5],
+					fact: "This city has hosted the Olympics twice and is known for blending tradition with cutting-edge technology."
+				},
+				{
+					date: "2025-02-02",
+					clue: "This city is famous for its futuristic gardens, including trees that light up at night.",
+					answer: "Singapore",
+					correctSquare: [3, 6],
+					fact: "This city is both a country and a city, known for its strict laws and high standard of living."
+				},
+				{
+					date: "2025-02-03",
+					clue: "This city is known for its stunning temples, including one made of gold, and a famous floating market.",
+					answer: "Bangkok",
+					correctSquare: [6, 3],
+					fact: "This city is one of the world's top tourist destinations and has the longest name of any city when fully written in its local language."
+				}
+			]
+		};
+		const regionQuestions = questions[region];
 
+
+		
         const gridContainer = document.getElementById("grid");
         const questionElement = document.getElementById("question");
         const streakElement = document.getElementById("streak");
         const guessSequenceElement = document.getElementById("guess-sequence");
         const shareButton = document.getElementById("share-button");
 		
+		
+		
 		const gameContainer = document.getElementById('game-container');
 		gameContainer.style.height = `${gameContainer.offsetWidth}px`;
 
 		let guesses = 0;
-        let streak = parseInt(localStorage.getItem("streak")) || 0;
-        let totalGuesses = parseInt(localStorage.getItem("totalGuesses")) || 0;
-        let totalGames = parseInt(localStorage.getItem("totalGames")) || 0;
-        let completedDate = localStorage.getItem("completedDate") || null;
+		let streak = getLocalStorageItem(`${region}_streak`, 0);
+		let totalGuesses = getLocalStorageItem(`${region}_totalGuesses`, 0);
+		let totalGames = getLocalStorageItem(`${region}_totalGames`, 0);
+		let completedDate = getLocalStorageItem(`${region}_completedDate`, null);
+
 
 		const today = new Date().toISOString().split('T')[0];
 		
@@ -314,6 +391,23 @@
 		}).replace(/ /g, ' ');
 
         let guessSequence = [];
+		function getLocalStorageItem(key, defaultValue = null) {
+			try {
+				return JSON.parse(localStorage.getItem(key)) || defaultValue;
+			} catch (e) {
+				console.error(`Error reading localStorage key "${key}":`, e);
+				return defaultValue;
+			}
+		}
+
+		function setLocalStorageItem(key, value) {
+			try {
+				localStorage.setItem(key, JSON.stringify(value));
+			} catch (e) {
+				console.error(`Error writing to localStorage key "${key}":`, e);
+			}
+		}
+
 
         function updateGuessSequenceDisplay() {
             guessSequenceElement.textContent = `${guessSequence.join(' ')}`;
@@ -328,11 +422,11 @@
                     color: square.style.backgroundColor || "transparent"
                 });
             });
-            localStorage.setItem("gridState", JSON.stringify(gridState));
+			setLocalStorageItem(`${region}_gridState`, gridState);
         }
 
         function loadGridState() {
-            const gridState = JSON.parse(localStorage.getItem("gridState")) || [];
+            const gridState = JSON.parse(localStorage.getItem(`${region}_gridState`)) || [];
             gridState.forEach(({ row, col, color }) => {
                 const square = document.querySelector(`.grid-square[data-row='${row}'][data-col='${col}']`);
                 if (square) {
@@ -341,25 +435,27 @@
             });
         }
 		
+		
 		function loadSequence() {
-			const savedSequence = JSON.parse(localStorage.getItem("guessSequence")) || [];
-			guesses = parseInt(localStorage.getItem("guessCount")) || 0; // Update the global `guesses` variable
+			const savedSequence = getLocalStorageItem(`${region}_guessSequence`, []);
+			guesses = getLocalStorageItem(`${region}_guessCount`, 0);
 			guessSequence = savedSequence;
-
 			updateGuessSequenceDisplay();
 		}
 
+
 		
 		function displayModalFromStorage() {
-			const completedAnswer = localStorage.getItem("completedAnswer");
-			const completedFact = localStorage.getItem("completedFact");
-			const completedImage = localStorage.getItem("completedImage");
+			const completedAnswer = getLocalStorageItem(`${region}_completedAnswer`);
+			const completedFact = getLocalStorageItem(`${region}_completedFact`);
+			const completedImage = getLocalStorageItem(`${region}_completedImage`);
+
 
 			console.log("Local Storage Values for Modal:", {
 				completedAnswer,
 				completedFact,
 				completedImage,
-				completedDate: localStorage.getItem("completedDate")
+				completedDate: localStorage.getItem(`${region}_completedDate`)
 			});
 
 			if (completedAnswer && completedFact && completedImage) {
@@ -368,29 +464,30 @@
 			}
 		}
 
-
-        if (completedDate === today) {
-            loadGridState();
-			loadSequence(); 
-            displayModalFromStorage();
-            questionElement.textContent = questions.find(q => q.date === today)?.clue || "No question available.";
-            streakElement.textContent = `Streak: ${streak} - Average Guesses: ${totalGames > 0 ? (totalGuesses / totalGames).toFixed(2) : 0}`;
-            gridContainer.style.pointerEvents = "none";
-        } else {
-			const todaysQuestion = getTodaysQuestion();
-			if (todaysQuestion) {
-				console.log(`Today's Question: ${todaysQuestion.clue}`);
-				console.log(`Today's Correct Square: Row ${todaysQuestion.correctSquare[0]}, Col ${todaysQuestion.correctSquare[1]}`);
+		if (completedDate === today) {
+			loadGridState();
+			loadSequence();
+			displayModalFromStorage();
+			questionElement.textContent = regionQuestions.find(q => q.date === today)?.clue || "No question available.";
+			streakElement.textContent = `Streak: ${streak} - Average Guesses: ${totalGames > 0 ? (totalGuesses / totalGames).toFixed(2) : 0}`;
+			gridContainer.style.pointerEvents = "none";
+		} else {
+			const todaysQuestion = getTodaysQuestion(regionQuestions);
+			if (!regionQuestions || regionQuestions.length === 0) {
+				questionElement.textContent = "No questions available for this region.";
+				gridContainer.style.pointerEvents = "none"; // Disable grid interactions
+			} else if (todaysQuestion && todaysQuestion.clue) {
+				questionElement.textContent = todaysQuestion.clue;
+			} else {
+				questionElement.textContent = "No question for today. Check back tomorrow!";
 			}
 
-            if (todaysQuestion && todaysQuestion.clue) {
-                questionElement.textContent = todaysQuestion.clue;
-            } else {
-                questionElement.textContent = "No question for today. Check back tomorrow!";
-            }
+			streakElement.textContent = `Streak: ${streak} - Average Guesses: ${totalGames > 0 ? (totalGuesses / totalGames).toFixed(2) : 0}`;
 
-            streakElement.textContent = `Streak: ${streak} - Average Guesses: ${totalGames > 0 ? (totalGuesses / totalGames).toFixed(2) : 0}`;
+			// Clear existing grid squares
+			gridContainer.innerHTML = "";
 
+			// Create grid squares
 			for (let row = 0; row < 12; row++) {
 				for (let col = 0; col < 12; col++) {
 					const square = document.createElement("div");
@@ -398,24 +495,37 @@
 					square.dataset.row = row;
 					square.dataset.col = col;
 					gridContainer.appendChild(square);
-
-					square.addEventListener("click", () => handleSquareClick(row, col));
 				}
 			}
+
+			// Add click listener to the entire grid container (event delegation)
+			if (!gridContainer.hasEventListener) {
+				gridContainer.addEventListener("click", (e) => {
+					const square = e.target.closest(".grid-square");
+					if (!square) return; // Ignore clicks outside the grid squares
+					const row = parseInt(square.dataset.row, 10);
+					const col = parseInt(square.dataset.col, 10);
+					handleSquareClick(row, col);
+				});
+				gridContainer.hasEventListener = true; // Prevent duplicate listeners
+			}
+
 			// Log all grid squares created
 			document.querySelectorAll('.grid-square').forEach(square => {
 				console.log(`Grid Square: Row ${square.dataset.row}, Col ${square.dataset.col}`);
 			});
-        }
+		}
 
-        function getTodaysQuestion() {
-            return questions.find(q => q.date === today);
-        }
+
+		function getTodaysQuestion(regionQuestions) {
+			return regionQuestions.find(q => q.date === today);
+		}
+
 
 
 		// Inside handleSquareClick, use the global 'guesses' variable:
 		async function handleSquareClick(row, col) {
-			const question = getTodaysQuestion();
+			const question = getTodaysQuestion(regionQuestions);
 			if (!question) return;
 
 			const [correctRow, correctCol] = question.correctSquare;
@@ -456,15 +566,16 @@
 				totalGuesses += guesses;
 				totalGames++;
 				completedDate = today;
-				localStorage.setItem("streak", streak);
-				localStorage.setItem("totalGuesses", totalGuesses);
-				localStorage.setItem("totalGames", totalGames);
-				localStorage.setItem("completedDate", completedDate);
-				localStorage.setItem("completedAnswer", question.answer);
-				localStorage.setItem("completedFact", question.fact);
-				localStorage.setItem("completedImage", imageUrl);
-				localStorage.setItem("guessSequence", JSON.stringify(guessSequence));
-				localStorage.setItem("guessCount", guesses);
+				setLocalStorageItem(`${region}_streak`, streak);
+				setLocalStorageItem(`${region}_totalGuesses`, totalGuesses);
+				setLocalStorageItem(`${region}_totalGames`, totalGames);
+				setLocalStorageItem(`${region}_completedDate`, completedDate);
+				setLocalStorageItem(`${region}_completedAnswer`, question.answer);
+				setLocalStorageItem(`${region}_completedFact`, question.fact);
+				setLocalStorageItem(`${region}_completedImage`, imageUrl);
+				setLocalStorageItem(`${region}_guessSequence`, guessSequence); // No need for JSON.stringify; handled by the helper
+				setLocalStorageItem(`${region}_guessCount`, guesses);
+
 				streakElement.textContent = `Streak: ${streak} - Average Guesses: ${(totalGuesses / totalGames).toFixed(2)}`;
 				showModal(question.answer, question.fact, imageUrl);
 				gridContainer.style.pointerEvents = "none";
@@ -477,7 +588,10 @@
                 const data = await response.json();
                 const pages = data.query.pages;
                 const page = Object.values(pages)[0];
-                return page.thumbnail ? page.thumbnail.source : "placeholder.jpg";
+				if (!page || !page.thumbnail) {
+					return "placeholder.jpg"; // Fallback image
+				}
+				return page.thumbnail.source;
             } catch (error) {
                 console.error("Failed to fetch image:", error);
                 return "placeholder.jpg";
@@ -502,8 +616,8 @@
 		
 
 		shareButton.addEventListener("click", async () => {
-			const savedSequence = JSON.parse(localStorage.getItem("guessSequence")) || [];
-			const savedGuesses = parseInt(localStorage.getItem("guessCount")) || 0;
+			const savedSequence = JSON.parse(localStorage.getItem(`${region}_guessSequence`)) || [];
+			const savedGuesses = parseInt(localStorage.getItem(`${region}_guessCount`)) || 0;
 
 			const shareText = `📍EuroHunter ${today_share}\n ${savedSequence.join('')} (${savedGuesses})`;
 			const shareUrl = "index.html";
