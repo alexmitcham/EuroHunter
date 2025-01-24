@@ -218,14 +218,13 @@
 </head>
 <body>
     <div id="emoji-links">
-        <a href="game_americas.html" title="Americas 🌎">🌎</a>
-        <a href="game_africa.html" title="Africa 🌍">🌍</a>
-        <a href="game_asia.html" title="Asia 🌏">🌏</a>
-        <a href="index.html" title="Help ❓">❓</a>
+		<a href="game_americas.html" title="Americas 🌎" aria-label="Play Americas Region">🌎</a>
+		<a href="game_africa.html" title="Africa 🌍" aria-label="Play Africa Region">🌍</a>
+		<a href="game_asia.html" title="Asia 🌎" aria-label="Play Asia Region">🌏</a>
     </div>
     <img src="logo.png" alt="Game Logo" style="margin-bottom: 0px; width: 150px;">
     <div id="game-container">
-        <img id="map" src="europe_map.png" alt="Map of Europe">
+        <img id="map" alt="Map of Europe">
         <div id="grid"></div>
     </div>
     <div id="question">Today's clue will appear here</div>
@@ -246,6 +245,7 @@
 
     <script>
 		const region = "europe"; 
+		document.getElementById("map").src = `${region}_map.png`;
         const questions = {
 			europe: [
 				{
@@ -308,10 +308,11 @@
 		gameContainer.style.height = `${gameContainer.offsetWidth}px`;
 
 		let guesses = 0;
-        let streak = parseInt(localStorage.getItem(`${region}_streak`)) || 0;
-        let totalGuesses = parseInt(localStorage.getItem(`${region}_totalGuesses`)) || 0;
-        let totalGames = parseInt(localStorage.getItem(`${region}_totalGames`)) || 0;
-        let completedDate = localStorage.getItem(`${region}_completedDate`) || null;
+		let streak = getLocalStorageItem(`${region}_streak`, 0);
+		let totalGuesses = getLocalStorageItem(`${region}_totalGuesses`, 0);
+		let totalGames = getLocalStorageItem(`${region}_totalGames`, 0);
+		let completedDate = getLocalStorageItem(`${region}_completedDate`, null);
+
 
 		const today = new Date().toISOString().split('T')[0];
 		
@@ -322,6 +323,23 @@
 		}).replace(/ /g, ' ');
 
         let guessSequence = [];
+		function getLocalStorageItem(key, defaultValue = null) {
+			try {
+				return JSON.parse(localStorage.getItem(key)) || defaultValue;
+			} catch (e) {
+				console.error(`Error reading localStorage key "${key}":`, e);
+				return defaultValue;
+			}
+		}
+
+		function setLocalStorageItem(key, value) {
+			try {
+				localStorage.setItem(key, JSON.stringify(value));
+			} catch (e) {
+				console.error(`Error writing to localStorage key "${key}":`, e);
+			}
+		}
+
 
         function updateGuessSequenceDisplay() {
             guessSequenceElement.textContent = `${guessSequence.join(' ')}`;
@@ -336,7 +354,7 @@
                     color: square.style.backgroundColor || "transparent"
                 });
             });
-            localStorage.setItem(`${region}_gridState`, JSON.stringify(gridState));
+			setLocalStorageItem(`${region}_gridState`, gridState);
         }
 
         function loadGridState() {
@@ -349,19 +367,21 @@
             });
         }
 		
+		
 		function loadSequence() {
-			const savedSequence = JSON.parse(localStorage.getItem(`${region}_guessSequence`)) || [];
-			guesses = parseInt(localStorage.getItem(`${region}_guessCount`)) || 0; // Update the global `guesses` variable
+			const savedSequence = getLocalStorageItem(`${region}_guessSequence`, []);
+			guesses = getLocalStorageItem(`${region}_guessCount`, 0);
 			guessSequence = savedSequence;
-
 			updateGuessSequenceDisplay();
 		}
 
+
 		
 		function displayModalFromStorage() {
-			const completedAnswer = localStorage.getItem(`${region}_completedAnswer`);
-			const completedFact = localStorage.getItem(`${region}_completedFact`);
-			const completedImage = localStorage.getItem(`${region}_completedImage`);
+			const completedAnswer = getLocalStorageItem(`${region}_completedAnswer`);
+			const completedFact = getLocalStorageItem(`${region}_completedFact`);
+			const completedImage = getLocalStorageItem(`${region}_completedImage`);
+
 
 			console.log("Local Storage Values for Modal:", {
 				completedAnswer,
@@ -383,17 +403,28 @@
             displayModalFromStorage();
             questionElement.textContent = regionQuestions.find(q => q.date === today)?.clue || "No question available.";
             streakElement.textContent = `Streak: ${streak} - Average Guesses: ${totalGames > 0 ? (totalGuesses / totalGames).toFixed(2) : 0}`;
-            gridContainer.style.pointerEvents = "none";
+			if (completedDate === today) {
+				gridContainer.style.pointerEvents = "none";
+			} else {
+				gridContainer.style.pointerEvents = "auto"; // Enable interactions for a new game
+			}
+
         } else {
-			const todaysQuestion = getTodaysQuestion(regionQuestions);
-            if (todaysQuestion && todaysQuestion.clue) {
-                questionElement.textContent = todaysQuestion.clue;
-            } else {
-                questionElement.textContent = "No question for today. Check back tomorrow!";
-            }
+			if (!regionQuestions || regionQuestions.length === 0) {
+				questionElement.textContent = "No questions available for this region.";
+				gridContainer.style.pointerEvents = "none"; // Disable grid interactions
+			} else if (todaysQuestion && todaysQuestion.clue) {
+				questionElement.textContent = todaysQuestion.clue;
+			} else {
+				questionElement.textContent = "No question for today. Check back tomorrow!";
+			}
 
             streakElement.textContent = `Streak: ${streak} - Average Guesses: ${totalGames > 0 ? (totalGuesses / totalGames).toFixed(2) : 0}`;
 
+			// Clear existing grid squares
+			gridContainer.innerHTML = "";
+
+			// Create grid squares
 			for (let row = 0; row < 12; row++) {
 				for (let col = 0; col < 12; col++) {
 					const square = document.createElement("div");
@@ -401,10 +432,23 @@
 					square.dataset.row = row;
 					square.dataset.col = col;
 					gridContainer.appendChild(square);
-
-					square.addEventListener("click", () => handleSquareClick(row, col));
 				}
 			}
+
+			// Add click listener to the entire grid container (event delegation)
+			// Ensure this is not duplicated during reloads
+			if (!gridContainer.hasEventListener) {
+				gridContainer.addEventListener("click", (e) => {
+					const square = e.target.closest(".grid-square");
+					if (!square) return; // Ignore clicks outside the grid squares
+					const row = parseInt(square.dataset.row, 10);
+					const col = parseInt(square.dataset.col, 10);
+					handleSquareClick(row, col);
+				});
+				gridContainer.hasEventListener = true; // Prevent duplicate listeners
+			}
+
+
 			// Log all grid squares created
 			document.querySelectorAll('.grid-square').forEach(square => {
 				console.log(`Grid Square: Row ${square.dataset.row}, Col ${square.dataset.col}`);
@@ -461,15 +505,16 @@
 				totalGuesses += guesses;
 				totalGames++;
 				completedDate = today;
-				localStorage.setItem(`${region}_streak`, streak);
-				localStorage.setItem(`${region}_totalGuesses`, totalGuesses);
-				localStorage.setItem(`${region}_totalGames`, totalGames);
-				localStorage.setItem(`${region}_completedDate`, completedDate);
-				localStorage.setItem(`${region}_completedAnswer`, question.answer);
-				localStorage.setItem(`${region}_completedFact`, question.fact);
-				localStorage.setItem(`${region}_completedImage`, imageUrl);
-				localStorage.setItem(`${region}_guessSequence`, JSON.stringify(guessSequence));
-				localStorage.setItem(`${region}_guessCount`, guesses);
+				setLocalStorageItem(`${region}_streak`, streak);
+				setLocalStorageItem(`${region}_totalGuesses`, totalGuesses);
+				setLocalStorageItem(`${region}_totalGames`, totalGames);
+				setLocalStorageItem(`${region}_completedDate`, completedDate);
+				setLocalStorageItem(`${region}_completedAnswer`, question.answer);
+				setLocalStorageItem(`${region}_completedFact`, question.fact);
+				setLocalStorageItem(`${region}_completedImage`, imageUrl);
+				setLocalStorageItem(`${region}_guessSequence`, guessSequence); // No need for JSON.stringify; handled by the helper
+				setLocalStorageItem(`${region}_guessCount`, guesses);
+
 				streakElement.textContent = `Streak: ${streak} - Average Guesses: ${(totalGuesses / totalGames).toFixed(2)}`;
 				showModal(question.answer, question.fact, imageUrl);
 				gridContainer.style.pointerEvents = "none";
@@ -482,7 +527,10 @@
                 const data = await response.json();
                 const pages = data.query.pages;
                 const page = Object.values(pages)[0];
-                return page.thumbnail ? page.thumbnail.source : "placeholder.jpg";
+				if (!page || !page.thumbnail) {
+					return "placeholder.jpg"; // Fallback image
+				}
+				return page.thumbnail.source;
             } catch (error) {
                 console.error("Failed to fetch image:", error);
                 return "placeholder.jpg";
