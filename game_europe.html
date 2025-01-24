@@ -9,248 +9,262 @@
 	<link rel="icon" href="icon.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 	<style>
-		body {
-			margin: 0;
-			font-family: 'DM Sans', Arial, sans-serif;
-			background: linear-gradient(to bottom, #87ceeb, #ffffff);
-			display: flex;
-			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-			min-height: 100vh;
-			cursor: url('cursor.png'), auto;
-		}
-
-		#game-container {
-			position: relative;
-			width: 45%;
-			max-width: 500px;
-			height: auto;
-			aspect-ratio: 1 / 1;
-			margin-bottom: 15px;
-			cursor: url('pin.png') 10 31, auto;
-		}
-
-		#map {
-			width: 100%;
-			height: 100%;
-		}
-
-		#grid {
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			display: grid;
-			grid-template-columns: repeat(12, 1fr);
-			grid-template-rows: repeat(12, 1fr);
-		}
-
-		.grid-square {
-			border: 1px solid rgba(0, 0, 0, 0.1);
-			background-color: transparent;
-			cursor: inherit;
-		}
-
-		.grid-square:hover {
-			opacity: 0.8;
-		}
-
-		#question {
-			font-size: 1.5em;
-			font-weight: bold;
-			text-align: center;
-			padding: 0 20px;
-		}
-
-		#guess-sequence {
-			margin-top: 10px;
-			font-size: 1.2em;
-			font-weight: bold;
-			color: #333;
-			text-align: center;
-		}
-
-		#streak {
-			margin-top: 10px;
-			font-size: 1.2em;
-			font-weight: bold;
-			color: #333;
-		}
-
-		#share-button {
-			margin-top: 10px;
-			padding: 10px 20px;
-			background-color: #00ab66;
-			color: white;
-			border: none;
-			border-radius: 4px;
-			cursor: pointer;
-		}
-
-		#share-button:hover {
-			background-color: #218838;
-		}
-
-		/* Modal styling */
-		#modal {
-			display: none;
-			position: fixed;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			background-color: white;
-			padding: 20px;
-			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-			border-radius: 8px;
-			text-align: center;
-			z-index: 1000;
-		}
-
-		#modal img {
-			max-width: 100%;
-			border-radius: 8px;
-		}
-
-		#overlay {
-			display: none;
-			position: fixed;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-			background: rgba(0, 0, 0, 0.5);
-			z-index: 999;
-		}
-
-		#modal button {
-			margin-top: 10px;
-			padding: 10px 20px;
-			background-color: #007bff;
-			color: white;
-			border: none;
-			border-radius: 4px;
-			cursor: pointer;
-		}
-
-		#modal button:hover {
-			background-color: #0056b3;
-		}
-
-		#custom-ok-button {
-			background-color: #28a745 !important;
-			color: white !important;
-			border: none !important;
-			border-radius: 8px !important;
-			font-size: 16px !important;
-			padding: 10px 20px !important;
-			cursor: pointer !important;
-		}
-
-		#custom-ok-button:hover {
-			background-color: #218838 !important;
-		}
-
-		/* Emoji Links */
-		#emoji-links-container {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			width: 100%;
-			padding: 0 10px; /* Adjust horizontal spacing */
-			position: absolute;
-			top: 10px;
-			z-index: 1000;
-		}
-
-		#world-emoji-links {
-			display: flex;
-			gap: 5px; /* Reduced gap between world emojis */
-		}
-
-		#world-emoji-links a {
-			text-decoration: none;
-			color: inherit;
-			cursor: url('pin.png') 10 31, auto;
-			font-size: 1.5em;
-			transition: transform 0.2s, text-shadow 0.3s, opacity 0.3s;
-		}
-
-		#world-emoji-links a:hover {
-			transform: scale(1.1);
-		}
-
-		#help-emoji-link {
-			display: flex;
-			justify-content: flex-end;
-		}
-
-		#help-emoji-link a {
-			text-decoration: none;
-			color: inherit;
-			cursor: url('pin.png') 10 31, auto;
-			font-size: 1.5em;
-			transition: transform 0.2s, text-shadow 0.3s, opacity 0.3s;
-		}
-
-		#help-emoji-link a:hover {
-			transform: scale(1.1);
-		}
-
-		/* Completed and Incomplete Links */
-		.complete {
-			text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000; /* Red shadow */
-			opacity: 0.5; /* Dimmed */
-		}
-
-		.incomplete {
-			text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00; /* Green shadow */
-			opacity: 1; /* Fully visible */
-		}
-
-		@media (max-width: 768px) {
-			#game-container {
-				width: 90%;
-				max-width: none;
-			}
-
-			img[src="logo.png"] {
-				width: 120px;
-				margin-bottom: 5px;
-				margin-top: -80px;
-			}
-
-			#question {
-				font-size: 1em;
-				padding: 0 15px;
-			}
-
-			#streak {
-				font-size: 0.9em;
-			}
-
-			#share-button {
-				font-size: 0.9em;
-				padding: 8px 16px;
-			}
-
-			#modal {
-				width: 90%;
-				padding: 15px;
-			}
-
-			#modal img {
-				max-width: 80%;
-			}
-		}
-
-		@media (min-width: 1024px) {
-			#question {
-				padding: 0 300px;
-			}
-		}
+	    body {
+	        margin: 0;
+	        font-family: 'DM Sans', Arial, sans-serif;
+	        background: linear-gradient(to bottom, #87ceeb, #ffffff);
+	        display: flex;
+	        flex-direction: column;
+	        align-items: center;
+	        justify-content: center;
+	        min-height: 100vh;
+	        cursor: url('cursor.png'), auto;
+	    }
+	
+	    #game-container {
+	        position: relative;
+	        width: 45%;
+	        max-width: 500px;
+	        height: auto;
+	        aspect-ratio: 1 / 1;
+	        margin-bottom: 15px;
+	        cursor: url('pin.png') 10 31, auto;
+	    }
+	
+	    #map {
+	        width: 100%;
+	        height: 100%;
+	    }
+	
+	    #grid {
+	        position: absolute;
+	        top: 0;
+	        left: 0;
+	        width: 100%;
+	        height: 100%;
+	        display: grid;
+	        grid-template-columns: repeat(12, 1fr);
+	        grid-template-rows: repeat(12, 1fr);
+	    }
+	
+	    .grid-square {
+	        border: 1px solid rgba(0, 0, 0, 0.1);
+	        background-color: transparent;
+	        cursor: inherit;
+	    }
+	
+	    .grid-square:hover {
+	        opacity: 0.8;
+	    }
+	
+	    #question {
+	        font-size: 1.5em;
+	        font-weight: bold;
+	        text-align: center;
+	        padding: 0 20px;
+	    }
+	
+	    #guess-sequence {
+	        margin-top: 10px;
+	        font-size: 1.2em;
+	        font-weight: bold;
+	        color: #333;
+	        text-align: center;
+	    }
+	
+	    #streak {
+	        margin-top: 10px;
+	        font-size: 1.2em;
+	        font-weight: bold;
+	        color: #333;
+	    }
+	
+	    #share-button {
+	        margin-top: 10px;
+	        padding: 10px 20px;
+	        background-color: #00ab66;
+	        color: white;
+	        border: none;
+	        border-radius: 4px;
+	        cursor: pointer;
+	    }
+	
+	    #share-button:hover {
+	        background-color: #218838;
+	    }
+	
+	    /* Modal styling */
+	    #modal {
+	        display: none;
+	        position: fixed;
+	        top: 50%;
+	        left: 50%;
+	        transform: translate(-50%, -50%);
+	        background-color: white;
+	        padding: 20px;
+	        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	        border-radius: 8px;
+	        text-align: center;
+	        z-index: 1000;
+	    }
+	
+	    #modal img {
+	        max-width: 100%;
+	        border-radius: 8px;
+	    }
+	
+	    #overlay {
+	        display: none;
+	        position: fixed;
+	        top: 0;
+	        left: 0;
+	        width: 100%;
+	        height: 100%;
+	        background: rgba(0, 0, 0, 0.5);
+	        z-index: 999;
+	    }
+	
+	    #modal button {
+	        margin-top: 10px;
+	        padding: 10px 20px;
+	        background-color: #007bff;
+	        color: white;
+	        border: none;
+	        border-radius: 4px;
+	        cursor: pointer;
+	    }
+	
+	    #modal button:hover {
+	        background-color: #0056b3;
+	    }
+	
+	    #custom-ok-button {
+	        background-color: #28a745 !important;
+	        color: white !important;
+	        border: none !important;
+	        border-radius: 8px !important;
+	        font-size: 16px !important;
+	        padding: 10px 20px !important;
+	        cursor: pointer !important;
+	    }
+	
+	    #custom-ok-button:hover {
+	        background-color: #218838 !important;
+	    }
+	
+	    /* Emoji Links */
+	    #emoji-links-container {
+	        display: flex;
+	        justify-content: space-between;
+	        align-items: center;
+	        width: 100%;
+	        padding: 0 10px; /* Adjust horizontal spacing */
+	        position: absolute;
+	        top: 10px;
+	        z-index: 1000;
+	    }
+	
+	    #world-emoji-links {
+	        display: flex;
+	        gap: 5px; /* Reduced gap between world emojis */
+	    }
+	
+	    #world-emoji-links a {
+	        text-decoration: none;
+	        color: inherit;
+	        cursor: url('pin.png') 10 31, auto;
+	        font-size: 1.5em;
+	        transition: transform 0.2s, text-shadow 0.3s, opacity 0.3s;
+	    }
+	
+	    #world-emoji-links a:hover {
+	        transform: scale(1.1);
+	    }
+	
+	    #help-emoji-link {
+	        display: flex;
+	        justify-content: flex-end;
+	    }
+	
+	    #help-emoji-link a {
+	        text-decoration: none;
+	        color: inherit;
+	        cursor: url('pin.png') 10 31, auto;
+	        font-size: 1.5em;
+	        transition: transform 0.2s, text-shadow 0.3s, opacity 0.3s;
+	    }
+	
+	    #help-emoji-link a:hover {
+	        transform: scale(1.1);
+	    }
+	
+	    /* Modal Game Links */
+	    #modal-game-links a {
+	        text-decoration: none; /* Remove underline */
+	        color: inherit;
+	        cursor: url('pin.png') 10 31, auto;
+	        font-size: 1.5em;
+	        transition: transform 0.2s, text-shadow 0.3s, opacity 0.3s;
+	    }
+	
+	    #modal-game-links a:hover {
+	        transform: scale(1.1);
+	    }
+	
+	    /* Completed and Incomplete Links */
+	    .complete {
+	        text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000; /* Red shadow */
+	        opacity: 0.5; /* Dimmed */
+	    }
+	
+	    .incomplete {
+	        text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00; /* Green shadow */
+	        opacity: 1; /* Fully visible */
+	    }
+	
+	    @media (max-width: 768px) {
+	        #game-container {
+	            width: 90%;
+	            max-width: none;
+	        }
+	
+	        img[src="logo.png"] {
+	            width: 120px;
+	            margin-bottom: 5px;
+	            margin-top: -80px;
+	        }
+	
+	        #question {
+	            font-size: 1em;
+	            padding: 0 15px;
+	        }
+	
+	        #streak {
+	            font-size: 0.9em;
+	        }
+	
+	        #share-button {
+	            font-size: 0.9em;
+	            padding: 8px 16px;
+	        }
+	
+	        #modal {
+	            width: 90%;
+	            padding: 15px;
+	        }
+	
+	        #modal img {
+	            max-width: 80%;
+	        }
+	    }
+	
+	    @media (min-width: 1024px) {
+	        #question {
+	            padding: 0 300px;
+	        }
+	    }
 	</style>
+
 
 </head>
 <body>
