@@ -802,19 +802,15 @@
 		// Function to update emoji links with shadow effects
 		function updateEmojiLinks() {
 			const completedGames = JSON.parse(localStorage.getItem("completedGames")) || [];
-			const emojiLinks = document.querySelectorAll("#emoji-links a, #modal-game-links a");
+			const emojiLinks = document.querySelectorAll("#world-emoji-links a, #modal-game-links a");
 
 			emojiLinks.forEach((link) => {
 				const href = link.getAttribute("href");
-				let region = null;
+				const regionMatch = href.match(/game_(.+)\.html/); // Extract region from href
 
-				// Safely extract the region from the href
-				if (href.includes("_") && href.endsWith(".html")) {
-					region = href.split("_")[1].replace(".html", "");
-				}
+				if (regionMatch) {
+					const region = regionMatch[1]; // Get the region name (e.g., "africa")
 
-				// If region was successfully extracted
-				if (region) {
 					if (completedGames.includes(region)) {
 						link.classList.add("complete"); // Add the "complete" class
 						link.classList.remove("incomplete"); // Remove the "incomplete" class
@@ -822,12 +818,9 @@
 						link.classList.add("incomplete"); // Add the "incomplete" class
 						link.classList.remove("complete"); // Remove the "complete" class
 					}
-				} else {
-					console.warn(`Could not extract region from href: ${href}`);
 				}
 			});
 		}
-
 
 		// Mark the current game as completed on page load (for the current region)
 		markGameCompleted(region);
