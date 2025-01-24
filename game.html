@@ -172,6 +172,19 @@
 		#emoji-links a:hover {
 			transform: scale(1.2);
 		}
+		
+		#modal-game-links a {
+			text-decoration: none;
+			color: inherit;
+			cursor: pointer;
+			margin: 0 10px;
+			transition: transform 0.2s;
+		}
+
+		#modal-game-links a:hover {
+			transform: scale(1.2);
+		}
+
 
     
 		@media (max-width: 768px) {
@@ -240,6 +253,12 @@
         <img id="modal-image" src="" alt="City Image">
         <p id="modal-fact"></p>
         <a id="modal-link" href="" target="_blank">Learn more on Wikipedia</a>
+		<br>
+		<div id="modal-game-links" style="margin-top: 20px; font-size: 1.5em;">
+			<a href="game_americas.html" title="Play Americas 🌎" aria-label="Play Americas Region">🌎</a>
+			<a href="game_africa.html" title="Play Africa 🌍" aria-label="Play Africa Region">🌍</a>
+			<a href="game_asia.html" title="Play Asia 🌏" aria-label="Play Asia Region">🌏</a>
+		</div>
         <br>
         <button id="share-button" style="margin-top: 10px;">Share</button>
         <button onclick="closeModal()" style="margin-top: 10px;">Close</button>
