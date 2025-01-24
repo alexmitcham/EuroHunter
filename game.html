@@ -137,6 +137,20 @@
         #modal button:hover {
             background-color: #0056b3;
         }
+		
+		#custom-ok-button {
+			background-color: #28a745 !important; /* Green background */
+			color: white !important; /* White text */
+			border: none !important; /* Remove border */
+			border-radius: 8px !important; /* Rounded corners */
+			font-size: 16px !important; /* Increase font size */
+			padding: 10px 20px !important; /* Adjust padding */
+			cursor: pointer !important; /* Pointer cursor on hover */
+		}
+
+		#custom-ok-button:hover {
+			background-color: #218838 !important; /* Darker green on hover */
+		}
     
 		@media (max-width: 768px) {
 			#game-container {
@@ -244,7 +258,7 @@
 				"clue": "This city is home to a harbour that is a UNESCO World Heritage site.",
 				"answer": "Hamburg",
 				"correctSquare": [4, 5],
-				"fact": "The German city of Hamburg has more bridges than Amsterdam and Venice combined."
+				"fact": "Hamburg has more bridges than Amsterdam and Venice combined."
 			}
         ];
 
@@ -495,6 +509,10 @@
 						icon: 'success',
 						title: 'Copied to clipboard!',
 						confirmButtonText: 'OK',
+						customClass: {
+							popup: 'swal2-small',
+							confirmButton: 'custom-ok-button',
+						},
 					});
 				} catch (err) {
 					console.error("Failed to copy to clipboard: ", err);
