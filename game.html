@@ -172,7 +172,7 @@
 		#emoji-links a, #modal-game-links a {
 			text-decoration: none;
 			color: inherit;
-			cursor: pointer;
+			cursor: url('pin.png') 10 31, auto;
 			margin: 0 10px;
 			font-size: 1em;
 			transition: transform 0.2s, text-shadow 0.3s, opacity 0.3s;
@@ -785,17 +785,31 @@
 		function updateEmojiLinks() {
 			const completedGames = JSON.parse(localStorage.getItem("completedGames")) || [];
 			const emojiLinks = document.querySelectorAll("#emoji-links a, #modal-game-links a");
+
 			emojiLinks.forEach((link) => {
-				const region = link.getAttribute("href").split("_")[1].replace(".html", ""); // Extract region from href
-				if (completedGames.includes(region)) {
-					link.classList.add("complete"); // Add the "complete" class
-					link.classList.remove("incomplete"); // Remove the "incomplete" class
+				const href = link.getAttribute("href");
+				let region = null;
+
+				// Safely extract the region from the href
+				if (href.includes("_") && href.endsWith(".html")) {
+					region = href.split("_")[1].replace(".html", "");
+				}
+
+				// If region was successfully extracted
+				if (region) {
+					if (completedGames.includes(region)) {
+						link.classList.add("complete"); // Add the "complete" class
+						link.classList.remove("incomplete"); // Remove the "incomplete" class
+					} else {
+						link.classList.add("incomplete"); // Add the "incomplete" class
+						link.classList.remove("complete"); // Remove the "complete" class
+					}
 				} else {
-					link.classList.add("incomplete"); // Add the "incomplete" class
-					link.classList.remove("complete"); // Remove the "complete" class
+					console.warn(`Could not extract region from href: ${href}`);
 				}
 			});
 		}
+
 
 		// Mark the current game as completed on page load (for the current region)
 		markGameCompleted(region);
