@@ -8,150 +8,150 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<link rel="icon" href="icon.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            margin: 0;
-            font-family: 'DM Sans', Arial, sans-serif;
-            background: linear-gradient(to bottom, #87ceeb, #ffffff);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            cursor: url('cursor.png'), auto;
-        }
+	<style>
+		body {
+			margin: 0;
+			font-family: 'DM Sans', Arial, sans-serif;
+			background: linear-gradient(to bottom, #87ceeb, #ffffff);
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			min-height: 100vh;
+			cursor: url('cursor.png'), auto;
+		}
 
-        #game-container {
-            position: relative;
-            width: 45%;
-            max-width: 500px;
+		#game-container {
+			position: relative;
+			width: 45%;
+			max-width: 500px;
 			height: auto;
-            aspect-ratio: 1 / 1;
-            margin-bottom: 15px;
-            cursor: url('pin.png') 10 31, auto;
-        }
+			aspect-ratio: 1 / 1;
+			margin-bottom: 15px;
+			cursor: url('pin.png') 10 31, auto;
+		}
 
-        #map {
-            width: 100%;
-            height: 100%;
-        }
+		#map {
+			width: 100%;
+			height: 100%;
+		}
 
-        #grid {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            grid-template-rows: repeat(12, 1fr);
-        }
+		#grid {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			display: grid;
+			grid-template-columns: repeat(12, 1fr);
+			grid-template-rows: repeat(12, 1fr);
+		}
 
-        .grid-square {
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            background-color: transparent;
-            cursor: inherit;
-        }
+		.grid-square {
+			border: 1px solid rgba(0, 0, 0, 0.1);
+			background-color: transparent;
+			cursor: inherit;
+		}
 
-        .grid-square:hover {
-            opacity: 0.8;
-        }
+		.grid-square:hover {
+			opacity: 0.8;
+		}
 
-        #question {
-            font-size: 1.5em;
-            font-weight: bold;
-            text-align: center;
+		#question {
+			font-size: 1.5em;
+			font-weight: bold;
+			text-align: center;
 			padding: 0 20px;
-        }
+		}
 
-        #guess-sequence {
-            margin-top: 10px;
-            font-size: 1.2em;
-            font-weight: bold;
-            color: #333;
-            text-align: center;
-        }
+		#guess-sequence {
+			margin-top: 10px;
+			font-size: 1.2em;
+			font-weight: bold;
+			color: #333;
+			text-align: center;
+		}
 
-        #streak {
-            margin-top: 10px;
-            font-size: 1.2em;
-            font-weight: bold;
-            color: #333;
-        }
+		#streak {
+			margin-top: 10px;
+			font-size: 1.2em;
+			font-weight: bold;
+			color: #333;
+		}
 
-        #share-button {
-            margin-top: 10px;
-            padding: 10px 20px;
-            background-color: #00ab66;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
+		#share-button {
+			margin-top: 10px;
+			padding: 10px 20px;
+			background-color: #00ab66;
+			color: white;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+		}
 
-        #share-button:hover {
-            background-color: #218838;
-        }
+		#share-button:hover {
+			background-color: #218838;
+		}
 
-        /* Modal styling */
-        #modal {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-            text-align: center;
-            z-index: 1000;
-        }
+		/* Modal styling */
+		#modal {
+			display: none;
+			position: fixed;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			background-color: white;
+			padding: 20px;
+			box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+			border-radius: 8px;
+			text-align: center;
+			z-index: 1000;
+		}
 
-        #modal img {
-            max-width: 100%;
-            border-radius: 8px;
-        }
+		#modal img {
+			max-width: 100%;
+			border-radius: 8px;
+		}
 
-        #overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 999;
-        }
+		#overlay {
+			display: none;
+			position: fixed;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: rgba(0, 0, 0, 0.5);
+			z-index: 999;
+		}
 
-        #modal button {
-            margin-top: 10px;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
+		#modal button {
+			margin-top: 10px;
+			padding: 10px 20px;
+			background-color: #007bff;
+			color: white;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+		}
 
-        #modal button:hover {
-            background-color: #0056b3;
-        }
-		
+		#modal button:hover {
+			background-color: #0056b3;
+		}
+
 		#custom-ok-button {
-			background-color: #28a745 !important; /* Green background */
-			color: white !important; /* White text */
-			border: none !important; /* Remove border */
-			border-radius: 8px !important; /* Rounded corners */
-			font-size: 16px !important; /* Increase font size */
-			padding: 10px 20px !important; /* Adjust padding */
-			cursor: pointer !important; /* Pointer cursor on hover */
+			background-color: #28a745 !important;
+			color: white !important;
+			border: none !important;
+			border-radius: 8px !important;
+			font-size: 16px !important;
+			padding: 10px 20px !important;
+			cursor: pointer !important;
 		}
 
 		#custom-ok-button:hover {
-			background-color: #218838 !important; /* Darker green on hover */
+			background-color: #218838 !important;
 		}
-		
+
 		#emoji-links {
 			position: absolute;
 			top: 10px;
@@ -162,18 +162,38 @@
 			font-size: 1.5em;
 		}
 
-		#emoji-links a {
+		#modal-game-links {
+			text-align: center;
+			margin-top: 20px;
+			font-size: 1.5em;
+		}
+
+		/* Shared styles for links in emoji links and modal game links */
+		#emoji-links a, #modal-game-links a {
 			text-decoration: none;
 			color: inherit;
-			cursor: pointer;
-			transition: transform 0.2s;
+			cursor: url('pin.png') 10 31, auto;
+			margin: 0 10px;
+			font-size: 1em;
+			transition: transform 0.2s, text-shadow 0.3s, opacity 0.3s;
 		}
 
-		#emoji-links a:hover {
-			transform: scale(1.2);
+		#emoji-links a:hover, #modal-game-links a:hover {
+			transform: scale(1.1);
 		}
 
-    
+		/* Completed links (dimmed with red shadow) */
+		.complete {
+			text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000;
+			opacity: 0.5;
+		}
+
+		/* Incomplete links (bright with green shadow) */
+		.incomplete {
+			text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00;
+			opacity: 1;
+		}
+
 		@media (max-width: 768px) {
 			#game-container {
 				width: 90%;
@@ -188,7 +208,7 @@
 
 			#question {
 				font-size: 1em;
-				padding: 0 15px; /* Adjust padding for smaller screens */
+				padding: 0 15px;
 			}
 
 			#streak {
@@ -209,24 +229,25 @@
 				max-width: 80%;
 			}
 		}
+
 		@media (min-width: 1024px) {
 			#question {
-				padding: 0 300px; /* Add padding specifically for laptops */
+				padding: 0 300px;
 			}
 		}
-    </style>
+	</style>
+
 </head>
 <body>
     <div id="emoji-links">
 	    	<a href="game.html" title="Europe 🌍" aria-label="Play Europe Region">🌍</a>
-		<a href="game_americas.html" title="Americas 🌎" aria-label="Play Americas Region">🌎</a>
+		<a href="game_americas.html" title="South America 🌎" aria-label="Play South America Region">🌎</a>
 		<a href="game_africa.html" title="Africa 🌍" aria-label="Play Africa Region">🌍</a>
-		<a href="game_asia.html" title="Asia 🌎" aria-label="Play Asia Region">🌏</a>
 	    	<a href="index.html" title="Help ❓"aria-label="Help">❓</a>
     </div>
     <img src="logo.png" alt="Game Logo" style="margin-bottom: 0px; width: 150px;">
     <div id="game-container">
-        <img id="map" alt="Map of Asia">
+        <img id="map" alt="Map of Europe">
         <div id="grid"></div>
     </div>
     <div id="question">Today's clue will appear here</div>
@@ -240,13 +261,19 @@
         <img id="modal-image" src="" alt="City Image">
         <p id="modal-fact"></p>
         <a id="modal-link" href="" target="_blank">Learn more on Wikipedia</a>
+		<br>
+		<div id="modal-game-links" style="margin-top: 20px; font-size: 1.5em;">
+			<a href="game.html" title="Play Europe 🌍" aria-label="Play Europe Region">🌍</a>
+			<a href="game_americas.html" title="Play South America 🌎" aria-label="Play Americas Region">🌎</a>
+			<a href="game_africa.html" title="Play Africa 🌍" aria-label="Play Africa Region">🌍</a>
+		</div>
         <br>
         <button id="share-button" style="margin-top: 10px;">Share</button>
         <button onclick="closeModal()" style="margin-top: 10px;">Close</button>
     </div>
 
     <script>
-		const region = "asia"; 
+		const region = "europe"; 
 		document.getElementById("map").src = `${region}_map.png`;
         const questions = {
 			europe: [
@@ -284,6 +311,13 @@
 					"answer": "Hamburg",
 					"correctSquare": [5, 5],
 					"fact": "The German city of Hamburg has more bridges than Amsterdam and Venice combined."
+				},
+				{
+					"date": "2025-01-24",
+					"clue": "This city is home to a harbour that is a UNESCO World Heritage site.",
+					"answer": "Hamburg",
+					"correctSquare": [5, 5],
+					"fact": "The German city of Hamburg has more bridges than Amsterdam and Venice combined."
 				}
 			],
 			africa: [
@@ -291,7 +325,14 @@
 					date: "2025-01-24",
 					clue: "This city is home to the ancient Lighthouse, one of the Seven Wonders of the Ancient World.",
 					answer: "Alexandria",
-					correctSquare: [5, 4],
+					correctSquare: [1, 8],
+					fact: "This Egyptian city was once one of the largest in the ancient world and a centre of learning and culture."
+				},
+				{
+					date: "2025-01-25",
+					clue: "This city is home to the ancient Lighthouse, one of the Seven Wonders of the Ancient World.",
+					answer: "Alexandria",
+					correctSquare: [1, 8],
 					fact: "This city was once one of the largest in the ancient world and a centre of learning and culture."
 				},
 				{
@@ -328,7 +369,14 @@
 					date: "2025-01-24",
 					clue: "This city is famous for its towering skyline and its role as a global financial hub.",
 					answer: "Hong Kong",
-					correctSquare: [4, 5],
+					correctSquare: [7, 8],
+					fact: "This city has more skyscrapers than any other city in the world and is known for its vibrant harbour."
+				},
+				{
+					date: "2025-01-25",
+					clue: "This city is famous for its towering skyline and its role as a global financial hub.",
+					answer: "Hong Kong",
+					correctSquare: [7, 8],
 					fact: "This city has more skyscrapers than any other city in the world and is known for its vibrant harbour."
 				},
 				{
@@ -359,6 +407,58 @@
 					correctSquare: [6, 3],
 					fact: "This city is one of the world's top tourist destinations and has the longest name of any city when fully written in its local language."
 				}
+			],
+			americas: [
+				{
+					date: "2025-01-24",
+					clue: "This city is known for its Christ the Redeemer statue and vibrant Carnival celebrations.",
+					answer: "Rio de Janeiro",
+					correctSquare: [4, 4],
+					fact: "The Christ the Redeemer statue is one of the New Seven Wonders of the World and stands atop Mount Corcovado."
+				},
+				{
+					date: "2025-01-25",
+					clue: "This city, perched high in the Andes, is famous for its nearby ancient Incan citadel.",
+					answer: "Cusco",
+					correctSquare: [5, 3],
+					fact: "Cusco was once the capital of the Incan Empire and is the gateway to Machu Picchu."
+				},
+				{
+					date: "2025-01-26",
+					clue: "This city is nicknamed the 'Paris of South America' for its European-style architecture.",
+					answer: "Buenos Aires",
+					correctSquare: [6, 4],
+					fact: "This city is famous for tango music and dance, as well as its historic cafés."
+				},
+				{
+					date: "2025-01-27",
+					clue: "This city sits at the foot of a giant salt flat and is one of the highest capital cities in the world.",
+					answer: "La Paz",
+					correctSquare: [4, 5],
+					fact: "La Paz is located at an altitude of over 3,500 metres, making it the highest administrative capital in the world."
+				},
+				{
+					date: "2025-01-28",
+					clue: "This city is home to a historic theatre known as the 'Teatro Amazonas,' built during the rubber boom.",
+					answer: "Manaus",
+					correctSquare: [5, 5],
+					fact: "Manaus is located in the heart of the Amazon Rainforest and serves as a major port despite being hundreds of miles from the ocean."
+				},
+				{
+					date: "2025-01-29",
+					clue: "This city is surrounded by mountains and is home to an iconic stone monolith called 'El Peñol.'",
+					answer: "Medellín",
+					correctSquare: [3, 6],
+					fact: "Medellín is known as the 'City of Eternal Spring' due to its pleasant climate year-round."
+				},
+				{
+					date: "2025-01-30",
+					clue: "This city is famous for its walled historic centre and colourful colonial buildings.",
+					answer: "Cartagena",
+					correctSquare: [6, 3],
+					fact: "Cartagena is a UNESCO World Heritage site and played a key role during the Spanish colonial era."
+				}
+
 			]
 		};
 		const regionQuestions = questions[region];
@@ -667,6 +767,54 @@
 				}
 			}
 		});
+
+		// Define the regions
+		const regions = ["americas", "africa", "asia", "europe"];
+
+		// Function to mark a game as completed
+		function markGameCompleted(region) {
+			const completedGames = JSON.parse(localStorage.getItem("completedGames")) || [];
+			if (!completedGames.includes(region)) {
+				completedGames.push(region);
+				localStorage.setItem("completedGames", JSON.stringify(completedGames));
+			}
+		}
+
+		// Function to update emoji links with shadow effects
+		function updateEmojiLinks() {
+			const completedGames = JSON.parse(localStorage.getItem("completedGames")) || [];
+			const emojiLinks = document.querySelectorAll("#emoji-links a, #modal-game-links a");
+
+			emojiLinks.forEach((link) => {
+				const href = link.getAttribute("href");
+				let region = null;
+
+				// Safely extract the region from the href
+				if (href.includes("_") && href.endsWith(".html")) {
+					region = href.split("_")[1].replace(".html", "");
+				}
+
+				// If region was successfully extracted
+				if (region) {
+					if (completedGames.includes(region)) {
+						link.classList.add("complete"); // Add the "complete" class
+						link.classList.remove("incomplete"); // Remove the "incomplete" class
+					} else {
+						link.classList.add("incomplete"); // Add the "incomplete" class
+						link.classList.remove("complete"); // Remove the "complete" class
+					}
+				} else {
+					console.warn(`Could not extract region from href: ${href}`);
+				}
+			});
+		}
+
+
+		// Mark the current game as completed on page load (for the current region)
+		markGameCompleted(region);
+
+		// Update emoji links
+		updateEmojiLinks();
 
 
     </script>
