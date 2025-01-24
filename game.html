@@ -463,6 +463,7 @@
 
 			const shareText = `📍EuroHunter ${today_share}\n ${savedSequence.join('')} (${savedGuesses})`;
 			const shareUrl = "index.html";
+			const fullUrl = `${window.location.origin}/${shareUrl}`;
 
 			// Check if the user is on a mobile device
 			const isMobile = /iPhone|iPad|iPod|Android|webOS|BlackBerry|Windows Phone/i.test(navigator.userAgent);
@@ -482,7 +483,7 @@
 			} else {
 				try {
 					// Fallback: Copy the share text to clipboard for desktop/laptops
-					await navigator.clipboard.writeText(`${shareText}\nhttps://alexmitcham.github.io/EuroHunter/`);
+					await navigator.clipboard.writeText(`${shareText}\n${fullUrl}`);
 					alert("Copied to clipboard!");
 				} catch (err) {
 					console.error("Failed to copy: ", err);
