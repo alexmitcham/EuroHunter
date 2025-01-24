@@ -184,7 +184,32 @@
 		#modal-game-links a:hover {
 			transform: scale(1.2);
 		}
+		/* Base styles for links */
+		#emoji-links a, #modal-game-links a {
+			text-decoration: none;
+			color: inherit;
+			cursor: pointer;
+			margin: 0 10px;
+			font-size: 2em;
+			transition: transform 0.2s, text-shadow 0.3s, opacity 0.3s;
+		}
 
+		/* Hover effect */
+		#emoji-links a:hover, #modal-game-links a:hover {
+			transform: scale(1.1);
+		}
+
+		/* Completed links (dimmed with red shadow) */
+		.complete {
+			text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000; /* Red shadow */
+			opacity: 0.5; /* Dimmed */
+		}
+
+		/* Incomplete links (bright with green shadow) */
+		.incomplete {
+			text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00; /* Green shadow */
+			opacity: 1; /* Fully visible */
+		}
 
     
 		@media (max-width: 768px) {
@@ -232,7 +257,7 @@
 <body>
     <div id="emoji-links">
 	    	<a href="game.html" title="Europe 🌍" aria-label="Play Europe Region">🌍</a>
-		<a href="game_americas.html" title="Americas 🌎" aria-label="Play Americas Region">🌎</a>
+		<a href="game_americas.html" title="South America 🌎" aria-label="Play South America Region">🌎</a>
 		<a href="game_africa.html" title="Africa 🌍" aria-label="Play Africa Region">🌍</a>
 		<a href="game_asia.html" title="Asia 🌎" aria-label="Play Asia Region">🌏</a>
 	    	<a href="index.html" title="Help ❓"aria-label="Help">❓</a>
@@ -399,6 +424,58 @@
 					correctSquare: [6, 3],
 					fact: "This city is one of the world's top tourist destinations and has the longest name of any city when fully written in its local language."
 				}
+			],
+			americas: [
+				{
+					date: "2025-01-24",
+					clue: "This city is known for its Christ the Redeemer statue and vibrant Carnival celebrations.",
+					answer: "Rio de Janeiro",
+					correctSquare: [4, 4],
+					fact: "The Christ the Redeemer statue is one of the New Seven Wonders of the World and stands atop Mount Corcovado."
+				},
+				{
+					date: "2025-01-25",
+					clue: "This city, perched high in the Andes, is famous for its nearby ancient Incan citadel.",
+					answer: "Cusco",
+					correctSquare: [5, 3],
+					fact: "Cusco was once the capital of the Incan Empire and is the gateway to Machu Picchu."
+				},
+				{
+					date: "2025-01-26",
+					clue: "This city is nicknamed the 'Paris of South America' for its European-style architecture.",
+					answer: "Buenos Aires",
+					correctSquare: [6, 4],
+					fact: "This city is famous for tango music and dance, as well as its historic cafés."
+				},
+				{
+					date: "2025-01-27",
+					clue: "This city sits at the foot of a giant salt flat and is one of the highest capital cities in the world.",
+					answer: "La Paz",
+					correctSquare: [4, 5],
+					fact: "La Paz is located at an altitude of over 3,500 metres, making it the highest administrative capital in the world."
+				},
+				{
+					date: "2025-01-28",
+					clue: "This city is home to a historic theatre known as the 'Teatro Amazonas,' built during the rubber boom.",
+					answer: "Manaus",
+					correctSquare: [5, 5],
+					fact: "Manaus is located in the heart of the Amazon Rainforest and serves as a major port despite being hundreds of miles from the ocean."
+				},
+				{
+					date: "2025-01-29",
+					clue: "This city is surrounded by mountains and is home to an iconic stone monolith called 'El Peñol.'",
+					answer: "Medellín",
+					correctSquare: [3, 6],
+					fact: "Medellín is known as the 'City of Eternal Spring' due to its pleasant climate year-round."
+				},
+				{
+					date: "2025-01-30",
+					clue: "This city is famous for its walled historic centre and colourful colonial buildings.",
+					answer: "Cartagena",
+					correctSquare: [6, 3],
+					fact: "Cartagena is a UNESCO World Heritage site and played a key role during the Spanish colonial era."
+				}
+
 			]
 		};
 		const regionQuestions = questions[region];
@@ -707,6 +784,40 @@
 				}
 			}
 		});
+
+		// Define the regions
+		const regions = ["americas", "africa", "asia", "europe"];
+
+		// Function to mark a game as completed
+		function markGameCompleted(region) {
+			const completedGames = JSON.parse(localStorage.getItem("completedGames")) || [];
+			if (!completedGames.includes(region)) {
+				completedGames.push(region);
+				localStorage.setItem("completedGames", JSON.stringify(completedGames));
+			}
+		}
+
+		// Function to update emoji links with shadow effects
+		function updateEmojiLinks() {
+			const completedGames = JSON.parse(localStorage.getItem("completedGames")) || [];
+			const emojiLinks = document.querySelectorAll("#emoji-links a, #modal-game-links a");
+			emojiLinks.forEach((link) => {
+				const region = link.getAttribute("href").split("_")[1].replace(".html", ""); // Extract region from href
+				if (completedGames.includes(region)) {
+					link.classList.add("complete"); // Add the "complete" class
+					link.classList.remove("incomplete"); // Remove the "incomplete" class
+				} else {
+					link.classList.add("incomplete"); // Add the "incomplete" class
+					link.classList.remove("complete"); // Remove the "complete" class
+				}
+			});
+		}
+
+		// Mark the current game as completed on page load (for the current region)
+		markGameCompleted(region);
+
+		// Update emoji links
+		updateEmojiLinks();
 
 
     </script>
