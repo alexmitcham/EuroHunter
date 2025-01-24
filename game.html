@@ -238,11 +238,11 @@
 				fact: "There are no fun facts about Birmingham"
 			},
 			{
-				"date": "2025-01-24",
+				"date": "2025-02-24",
 				"clue": "This city is home to a harbour that is a UNESCO World Heritage site.",
 				"answer": "Hamburg",
 				"correctSquare": [4, 5],
-				"fact": "Hamburg (Germany) has more bridges than Amsterdam and Venice combined."
+				"fact": "Hamburg has more bridges than Amsterdam and Venice combined."
 			}
         ];
 
@@ -456,26 +456,36 @@
             document.getElementById("modal").style.display = "none";
         }
 		
-		shareButton.addEventListener("click", () => {
+		shareButton.addEventListener("click", async () => {
 			const savedSequence = JSON.parse(localStorage.getItem("guessSequence")) || [];
 			const savedGuesses = parseInt(localStorage.getItem("guessCount")) || 0;
 
 			const shareText = `📍EuroHunter ${today_share}\n ${savedSequence.join('')} (${savedGuesses})`;
+			const shareUrl = "index.html";
 
 			if (navigator.share) {
-				navigator.share({
-					title: "EuroHunter",
-					text: shareText,
-					url: "index.html",
-				})
-					.then(() => console.log("Shared successfully!"))
-					.catch((err) => console.error("Error sharing: ", err));
+				try {
+					// Try sharing using the `navigator.share` API
+					await navigator.share({
+						title: "EuroHunter",
+						text: shareText,
+						url: shareUrl,
+					});
+					console.log("Shared successfully!");
+				} catch (err) {
+					console.error("Error sharing: ", err);
+				}
 			} else {
-				navigator.clipboard.writeText(shareText)
-					.then(() => alert("Copied to clipboard!"))
-					.catch((err) => console.error("Failed to copy: ", err));
+				// Fallback: Copy to clipboard
+				try {
+					await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
+					alert("Copied to clipboard!");
+				} catch (err) {
+					console.error("Failed to copy: ", err);
+				}
 			}
 		});
+
 
     </script>
 </body>
