@@ -479,12 +479,6 @@
 						url: shareUrl,
 					});
 					console.log("Shared successfully!");
-					Swal.fire({
-						icon: 'success',
-						title: 'Shared successfully!',
-						text: 'Your progress has been shared.',
-						confirmButtonText: 'OK',
-					});
 				} catch (err) {
 					console.error("Error sharing on mobile: ", err);
 					Swal.fire({
