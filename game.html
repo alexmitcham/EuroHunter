@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EuroHunter</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<link rel="icon" href="icon.png" type="image/x-icon">
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -242,7 +244,7 @@
 				"clue": "This city is home to a harbour that is a UNESCO World Heritage site.",
 				"answer": "Hamburg",
 				"correctSquare": [4, 5],
-				"fact": "The German city of Hamburg has more bridges than Amsterdam and Venice combined."
+				"fact": "Hamburg has more bridges than Amsterdam and Venice combined."
 			}
         ];
 
@@ -477,16 +479,37 @@
 						url: shareUrl,
 					});
 					console.log("Shared successfully!");
+					Swal.fire({
+						icon: 'success',
+						title: 'Shared successfully!',
+						text: 'Your progress has been shared.',
+						confirmButtonText: 'OK',
+					});
 				} catch (err) {
 					console.error("Error sharing on mobile: ", err);
+					Swal.fire({
+						icon: 'error',
+						title: 'Oops...',
+						text: 'Unable to share. Please try again.',
+					});
 				}
 			} else {
 				try {
 					// Fallback: Copy the share text to clipboard for desktop/laptops
 					await navigator.clipboard.writeText(`${shareText}\n${fullUrl}`);
-					alert("Copied to clipboard!");
+					Swal.fire({
+						icon: 'success',
+						title: 'Copied to clipboard!',
+						text: 'You can now share it manually.',
+						confirmButtonText: 'OK',
+					});
 				} catch (err) {
-					console.error("Failed to copy: ", err);
+					console.error("Failed to copy to clipboard: ", err);
+					Swal.fire({
+						icon: 'error',
+						title: 'Oops...',
+						text: 'Unable to copy to clipboard. Please try again.',
+					});
 				}
 			}
 		});
