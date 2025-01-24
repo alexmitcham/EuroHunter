@@ -151,6 +151,28 @@
 		#custom-ok-button:hover {
 			background-color: #218838 !important; /* Darker green on hover */
 		}
+		
+		#emoji-links {
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			display: flex;
+			gap: 10px;
+			z-index: 1000;
+			font-size: 1.5em;
+		}
+
+		#emoji-links a {
+			text-decoration: none;
+			color: inherit;
+			cursor: pointer;
+			transition: transform 0.2s;
+		}
+
+		#emoji-links a:hover {
+			transform: scale(1.2);
+		}
+
     
 		@media (max-width: 768px) {
 			#game-container {
@@ -195,6 +217,12 @@
     </style>
 </head>
 <body>
+    <div id="emoji-links">
+        <a href="game_americas.html" title="Americas 🌎">🌎</a>
+        <a href="game_africa.html" title="Africa 🌍">🌍</a>
+        <a href="game_asia.html" title="Asia 🌏">🌏</a>
+        <a href="index.html" title="Help ❓">❓</a>
+    </div>
     <img src="logo.png" alt="Game Logo" style="margin-bottom: 0px; width: 150px;">
     <div id="game-container">
         <img id="map" src="map-of-europe-placeholder.jpg" alt="Map of Europe">
