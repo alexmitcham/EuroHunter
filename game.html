@@ -236,6 +236,13 @@
 				answer: "Birmingham",
 				correctSquare: [4, 3],
 				fact: "There are no fun facts about Birmingham"
+			},
+			{
+				"date": "2025-02-24",
+				"clue": "This city is home to a harbour that is a UNESCO World Heritage site.",
+				"answer": "Hamburg",
+				"correctSquare": [4, 5],
+				"fact": "Hamburg has more bridges than Amsterdam and Venice combined."
 			}
         ];
 
@@ -369,33 +376,35 @@
 
 			const [correctRow, correctCol] = question.correctSquare;
 			const distance = Math.sqrt((row - correctRow) ** 2 + (col - correctCol) ** 2);
-			const maxDistance = Math.sqrt(6 ** 2 + 6 ** 2);
+			const maxDistance = Math.sqrt(5 ** 2 + 5 ** 2);
 			const intensity = 1 - (distance / maxDistance);
 
 			const clickedSquare = document.querySelector(`.grid-square[data-row='${row}'][data-col='${col}']`);
 
-			const r = Math.round(245);
-			const g = Math.round(175 + (39 - 175) * intensity);
-			const b = Math.round(25 + (17 - 25) * intensity);
+			const r = Math.round(245 + (193 - 245) * intensity)
+			const g = Math.round(175 + (31 - 175) * intensity);
+			const b = Math.round(25 + (14 - 25) * intensity);
 
 			clickedSquare.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
 
 			// Increment the global `guesses` variable (no re-declaration here)
 			guesses++;
 
-			if (distance > 1.5) {
+			if (distance > 2.9) {
 				guessSequence.push("🟨");
-			} else if (distance > 0.8) {
+			} else if (distance > 1.5) {
 				guessSequence.push("🟧");
-			} else {
+			} else if (distance > 0.8) {
 				guessSequence.push("🟥");
+			} else {
+				guessSequence.push("🟩");
 			}
 
 			updateGuessSequenceDisplay();
 			saveGridState();
 
 			if (row === correctRow && col === correctCol) {
-				clickedSquare.style.backgroundColor = "#c11f0e";
+				clickedSquare.style.backgroundColor = "#166534";
 				saveGridState();
 
 				const imageUrl = await fetchWikipediaImage(question.answer);
