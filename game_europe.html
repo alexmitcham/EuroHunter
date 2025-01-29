@@ -681,17 +681,18 @@
 			return regionQuestions.find(q => q.date === today);
 		}
 
+
 		async function handleSquareClick(row, col) {
 			const question = getTodaysQuestion(regionQuestions);
 			if (!question) return;
 
 			const clickedSquare = document.querySelector(`.grid-square[data-row='${row}'][data-col='${col}']`);
 
-			// ✅ Fix: Prevent duplicate clicks on the same square
+			// ✅ Prevent duplicate clicks
 			if (clickedSquare.classList.contains("selected")) {
 				return;
 			}
-			clickedSquare.classList.add("selected"); // ✅ Mark square as guessed
+			clickedSquare.classList.add("selected");
 
 			// Calculate distance from correct square
 			const [correctRow, correctCol] = question.correctSquare;
@@ -699,14 +700,14 @@
 			const maxDistance = Math.sqrt(5 ** 2 + 5 ** 2);
 			const intensity = 1 - (distance / maxDistance);
 
-			// ✅ Fix: Color calculation now properly updates
+			// Apply heatmap-style coloring
 			const r = Math.round(245 + (193 - 245) * intensity);
 			const g = Math.round(175 + (31 - 175) * intensity);
 			const b = Math.round(25 + (14 - 25) * intensity);
 
 			clickedSquare.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
 
-			// ✅ Fix: Save every guess to persist across refreshes
+			// ✅ Save guess sequence after each guess
 			guesses++;
 			if (distance > 2.9) {
 				guessSequence.push("🟨");
@@ -719,15 +720,35 @@
 			}
 
 			updateGuessSequenceDisplay();
-			saveGridState(); // ✅ Save after every guess
+			saveGridState(); // ✅ Save progress immediately
 			setLocalStorageItem(`${region}_guessSequence`, guessSequence);
 			setLocalStorageItem(`${region}_guessCount`, guesses);
 
-			// ✅ Fix: Ensure grid is saved if the correct answer is found
+			// ✅ Check if the answer is correct
 			if (row === correctRow && col === correctCol) {
-				clickedSquare.style.backgroundColor = "#166534";
-				saveGridState();
+				clickedSquare.style.backgroundColor = "#166534"; // ✅ Final correct color
+
+				// ✅ Fetch city image before saving final state
+				const imageUrl = await fetchWikipediaImage(question.answer);
+
+				// ✅ Show the modal immediately
 				showModal(question.answer, question.fact, imageUrl);
+
+				// ✅ Save final game state AFTER the modal appears
+				streak++;
+				totalGuesses += guesses;
+				totalGames++;
+				completedDate = today;
+
+				setLocalStorageItem(`${region}_streak`, streak);
+				setLocalStorageItem(`${region}_totalGuesses`, totalGuesses);
+				setLocalStorageItem(`${region}_totalGames`, totalGames);
+				setLocalStorageItem(`${region}_completedDate`, completedDate);
+				setLocalStorageItem(`${region}_completedAnswer`, question.answer);
+				setLocalStorageItem(`${region}_completedFact`, question.fact);
+				setLocalStorageItem(`${region}_completedImage`, imageUrl);
+
+				// ✅ Ensure game is locked only after everything is saved
 				gridContainer.style.pointerEvents = "none";
 			}
 		}
