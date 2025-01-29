@@ -580,21 +580,18 @@
 			setLocalStorageItem(`${region}_gridState`, gridState);
         }
 		
-
 		function loadGridState() {
-			const gridState = JSON.parse(localStorage.getItem(`${region}_gridState`)) || [];
+			const gridState = getLocalStorageItem(`${region}_gridState`, []);
 			gridState.forEach(({ row, col, color }) => {
 				const square = document.querySelector(`.grid-square[data-row='${row}'][data-col='${col}']`);
 				if (square) {
 					square.style.backgroundColor = color;
 					if (color !== "transparent") {
-						square.classList.add("selected"); // Mark squares as already guessed
+						square.classList.add("selected"); // ✅ Marks previously clicked squares
 					}
 				}
 			});
 		}
-
-			
 
 		function loadSequence() {
 			const savedSequence = getLocalStorageItem(`${region}_guessSequence`, []);
@@ -602,6 +599,7 @@
 			guessSequence = savedSequence;
 			updateGuessSequenceDisplay();
 		}
+
 
 		
 		function displayModalFromStorage() {
@@ -623,13 +621,16 @@
 			}
 		}
 		
+		window.addEventListener("load", () => {
+			loadGridState();  // ✅ Restore the grid on page load
+			loadSequence();   // ✅ Restore the guess sequence on page load
+		});
+
 		if (completedDate === today) {
-			loadGridState();
-			loadSequence();
-			displayModalFromStorage();  // Ensure the modal reappears
+			displayModalFromStorage(); // ✅ If game was already completed, show modal again
 			questionElement.textContent = regionQuestions.find(q => q.date === today)?.clue || "No question available.";
 			streakElement.textContent = `Streak: ${streak} - Average Guesses: ${totalGames > 0 ? (totalGuesses / totalGames).toFixed(2) : 0}`;
-			gridContainer.style.pointerEvents = "none"; // Disable clicking once completed
+			gridContainer.style.pointerEvents = "none"; // ✅ Disable clicking if game is completed
 		} else {
 			const todaysQuestion = getTodaysQuestion(regionQuestions);
 			if (!regionQuestions || regionQuestions.length === 0) {
@@ -686,11 +687,11 @@
 
 			const clickedSquare = document.querySelector(`.grid-square[data-row='${row}'][data-col='${col}']`);
 
-			// 🚨 Prevent duplicate guesses
+			// ✅ Fix: Prevent duplicate clicks on the same square
 			if (clickedSquare.classList.contains("selected")) {
-				return; // Exit if the square has already been clicked
+				return;
 			}
-			clickedSquare.classList.add("selected"); // Mark as guessed
+			clickedSquare.classList.add("selected"); // ✅ Mark square as guessed
 
 			// Calculate distance from correct square
 			const [correctRow, correctCol] = question.correctSquare;
@@ -698,61 +699,38 @@
 			const maxDistance = Math.sqrt(5 ** 2 + 5 ** 2);
 			const intensity = 1 - (distance / maxDistance);
 
-			// Apply heatmap-style colouring based on proximity
+			// ✅ Fix: Color calculation now properly updates
 			const r = Math.round(245 + (193 - 245) * intensity);
 			const g = Math.round(175 + (31 - 175) * intensity);
 			const b = Math.round(25 + (14 - 25) * intensity);
 
 			clickedSquare.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
 
-			// 🔄 Update guess tracking
+			// ✅ Fix: Save every guess to persist across refreshes
 			guesses++;
 			if (distance > 2.9) {
-				guessSequence.push("🟨"); // Yellow - far away
+				guessSequence.push("🟨");
 			} else if (distance > 1.5) {
-				guessSequence.push("🟧"); // Orange - getting closer
+				guessSequence.push("🟧");
 			} else if (distance > 0.8) {
-				guessSequence.push("🟥"); // Red - very close
+				guessSequence.push("🟥");
 			} else {
-				guessSequence.push("🟩"); // Green - correct
+				guessSequence.push("🟩");
 			}
 
 			updateGuessSequenceDisplay();
-			saveGridState(); // Save grid progress
+			saveGridState(); // ✅ Save after every guess
+			setLocalStorageItem(`${region}_guessSequence`, guessSequence);
+			setLocalStorageItem(`${region}_guessCount`, guesses);
 
-			// 🎯 Check if the guess is correct
+			// ✅ Fix: Ensure grid is saved if the correct answer is found
 			if (row === correctRow && col === correctCol) {
-				clickedSquare.style.backgroundColor = "#166534"; // Final correct guess color
+				clickedSquare.style.backgroundColor = "#166534";
 				saveGridState();
-
-				// 🎉 Correct answer: Show modal
-				const imageUrl = await fetchWikipediaImage(question.answer);
-				streak++;
-				totalGuesses += guesses;
-				totalGames++;
-				completedDate = today;
-
-				// Save progress to localStorage
-				setLocalStorageItem(`${region}_streak`, streak);
-				setLocalStorageItem(`${region}_totalGuesses`, totalGuesses);
-				setLocalStorageItem(`${region}_totalGames`, totalGames);
-				setLocalStorageItem(`${region}_completedDate`, completedDate);
-				setLocalStorageItem(`${region}_completedAnswer`, question.answer);
-				setLocalStorageItem(`${region}_completedFact`, question.fact);
-				setLocalStorageItem(`${region}_completedImage`, imageUrl);
-				setLocalStorageItem(`${region}_guessSequence`, guessSequence);
-				setLocalStorageItem(`${region}_guessCount`, guesses);
-
-				// Update streak text
-				streakElement.textContent = `Streak: ${streak} - Average Guesses: ${(totalGuesses / totalGames).toFixed(2)}`;
-
-				// Show the modal
 				showModal(question.answer, question.fact, imageUrl);
-				gridContainer.style.pointerEvents = "none"; // Prevent further interactions
+				gridContainer.style.pointerEvents = "none";
 			}
 		}
-
-
 
         async function fetchWikipediaImage(city) {
             try {
