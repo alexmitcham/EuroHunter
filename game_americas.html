@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EuroHunter</title>
+    <title>GlobeHunter</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 	<link rel="icon" href="icon.png" type="image/x-icon">
@@ -296,11 +296,11 @@
     <div id="modal">
         <h2 id="modal-title">The mystery city is <span id="city-name"></span>!</h2>
         <img id="modal-image" src="" alt="City Image">
-        <p id="modal-fact"></p>
-	<div id="modal-links">
-		<a id="modal-link" href="" target="_blank">Learn more on Wikipedia</a>
-		<span>or click a globe below for more!</span>
-	</div>
+		<p id="modal-fact"></p>
+		<div id="modal-links">
+			<a id="modal-link" href="" target="_blank">Learn more on Wikipedia</a>
+			<span>or click a globe below for more!</span>
+		</div>
 		<div id="modal-game-links" style="margin-top: 20px; font-size: 1.5em;">
 			<a href="game_europe.html" title="Play Europe 🌍" aria-label="Play Europe Region">🌍</a>
 			<a href="game_africa.html" title="Play Africa 🌍" aria-label="Play Africa Region">🌍</a>
@@ -318,7 +318,7 @@
         const questions = {
 			europe: [
 				{
-					date: "2025-01-19",
+					date: "2025-01-29",
 					clue: "This city was built on over 100 islands connected by canals and relies on wooden foundations driven into the seabed.",
 					answer: "Venice",
 					correctSquare: [6, 5],
@@ -346,21 +346,56 @@
 					fact: "There are no fun facts about Birmingham"
 				},
 				{
-					"date": "2025-01-24",
+					"date": "2025-01-30",
 					"clue": "This city is home to a harbour that is a UNESCO World Heritage site.",
 					"answer": "Hamburg",
 					"correctSquare": [5, 5],
 					"fact": "The German city of Hamburg has more bridges than Amsterdam and Venice combined."
 				},
 				{
-					"date": "2025-01-24",
+					"date": "2025-01-28",
+					"clue": "Naomi has just explored this city!",
+					"answer": "Copenhagen",
+					"correctSquare": [4, 5],
+					"fact": "Sometimes you end up here after a 24 hour trip to Oslo."
+				},
+				{
+					"date": "2025-01-26",
 					"clue": "This city is home to a harbour that is a UNESCO World Heritage site.",
 					"answer": "Hamburg",
 					"correctSquare": [5, 5],
 					"fact": "The German city of Hamburg has more bridges than Amsterdam and Venice combined."
-				}
+				},
+				{
+					"date": "2025-01-30",
+					"clue": "This city has the highest elevation of all the European capitals.",
+					"answer": "Andorra La Vella",
+					"correctSquare": [9, 3],
+					"fact": "Nestled in the Pyrenees Mountains between France and Spain, Andorra La Vella is the capital of Andorra."
+				},
+				{
+					"date": "2025-01-31",
+					"clue": "Known for its medieval university, this city has a leaning tower that’s not as famous as its neighbour’s.",
+					"answer": "Bologna",
+					"correctSquare": [8, 5],
+					"fact": "The Italian city of Bologna has two leaning towers, the taller of which, Asinelli Tower, leans more than the famous Leaning Tower of Pisa."
+				},
 			],
 			africa: [
+				{
+					"date": "2025-01-30",
+					"clue": "With its towering skyscrapers and buzzing nightlife, this city has earned the nickname ‘Paris of West Africa’—but with better weather.",
+					"answer": "Abidjan",
+					"correctSquare": [5, 3],
+					"fact": "The largest city in Côte d'Ivoire, Abidjan is a major economic hub with a skyline that rivals European capitals, earning it the nickname ‘Paris of West Africa.’"
+				},
+				{
+					"date": "2025-01-31",
+					"clue": "Before he rocked stadiums worldwide, the lead singer of Queen took his first steps in this island city’s historic Stone Town.",
+					"answer": "Zanzibar City",
+					"correctSquare": [7, 5],
+					"fact": "Freddie Mercury, the legendary frontman of Queen, was born in Stone Town, Zanzibar, in 1946. His childhood home is now a popular tourist site."
+				},
 				{
 					date: "2025-01-24",
 					clue: "This city is home to the ancient Lighthouse, one of the Seven Wonders of the Ancient World.",
@@ -406,6 +441,20 @@
 			],
 			asia: [
 				{
+					"date": "2025-01-30",
+					"clue": "Foodies, take note! This city holds the record for the most Michelin-starred restaurants in the world.",
+					"answer": "Tokyo",
+					"correctSquare": [5, 11],
+					"fact": "Japan’s capital, Tokyo, is home to more Michelin-starred restaurants than any other city, making it a dream destination for fine dining lovers."
+				},
+				{
+					"date": "2025-01-31",
+					"clue": "You might need to take a deep breath before saying this city’s full ceremonial name—it’s 169 characters long, the longest in the world!",
+					"answer": "Bangkok",
+					"correctSquare": [5, 8],
+					"fact": "Bangkok’s full ceremonial name is ‘Krung Thep Maha Nakhon Amon Rattanakosin Mahinthara Yuthaya Mahadilok Phop Noppharat Ratchathani Burirom Udomratchaniwet Mahasathan Amon Piman Awatan Sathit Sakkathattiya Witsanukam Prasit’—the longest city name in the world!"
+				},
+				{
 					date: "2025-01-24",
 					clue: "This city is famous for its towering skyline and its role as a global financial hub.",
 					answer: "Hong Kong",
@@ -420,7 +469,7 @@
 					fact: "This city has more skyscrapers than any other city in the world and is known for its vibrant harbour."
 				},
 				{
-					date: "2025-01-31",
+					date: "2025-01-2",
 					clue: "This city is nicknamed the 'City of Lakes' due to its numerous beautiful lakes scattered throughout.",
 					answer: "Udaipur",
 					correctSquare: [6, 4],
@@ -450,7 +499,21 @@
 			],
 			americas: [
 				{
-					date: "2025-01-28",
+					"date": "2025-01-30",
+					"clue": "This ancient city was once the beating heart of the Inca Empire—and from above, it’s shaped like a puma.",
+					"answer": "Cusco",
+					"correctSquare": [4, 4],
+					"fact": "Cusco, Peru, was the capital of the Inca Empire, and its original city layout was designed in the shape of a puma, a sacred animal in Incan culture."
+				},
+				{
+					"date": "2025-01-31",
+					"clue": "Despite sitting right next to the Pacific Ocean, this city is the second-driest capital in the world—only Cairo gets less rain!",
+					"answer": "Lima",
+					"correctSquare": [2, 7],
+					"fact": "Lima, Peru, is located in a coastal desert and receives almost no rainfall, making it the second-driest capital in the world after Cairo."
+				}
+				{
+					date: "2025-01-24",
 					clue: "This city is known for its Christ the Redeemer statue and vibrant Carnival celebrations.",
 					answer: "Rio de Janeiro",
 					correctSquare: [5, 8],
@@ -464,7 +527,7 @@
 					fact: "The Christ the Redeemer statue is one of the New Seven Wonders of the World and stands atop Mount Corcovado."
 				},
 				{
-					date: "2025-01-31",
+					date: "2025-01-32",
 					clue: "This city, perched high in the Andes, is famous for its nearby ancient Incan citadel.",
 					answer: "Cusco",
 					correctSquare: [5, 3],
@@ -478,14 +541,14 @@
 					fact: "This city is famous for tango music and dance, as well as its historic cafés."
 				},
 				{
-					date: "2025-01-25",
+					date: "2025-01-27",
 					clue: "This city sits at the foot of a giant salt flat and is one of the highest capital cities in the world.",
 					answer: "La Paz",
 					correctSquare: [4, 5],
 					fact: "La Paz is located at an altitude of over 3,500 metres, making it the highest administrative capital in the world."
 				},
 				{
-					date: "2025-01-26",
+					date: "2025-01-28",
 					clue: "This city is home to a historic theatre known as the 'Teatro Amazonas,' built during the rubber boom.",
 					answer: "Manaus",
 					correctSquare: [5, 5],
@@ -499,7 +562,7 @@
 					fact: "Medellín is known as the 'City of Eternal Spring' due to its pleasant climate year-round."
 				},
 				{
-					date: "2025-01-30",
+					date: "2025-01-33",
 					clue: "This city is famous for its walled historic centre and colourful colonial buildings.",
 					answer: "Cartagena",
 					correctSquare: [6, 3],
@@ -572,18 +635,20 @@
             });
 			setLocalStorageItem(`${region}_gridState`, gridState);
         }
+		
+		function loadGridState() {
+			const gridState = getLocalStorageItem(`${region}_gridState`, []);
+			gridState.forEach(({ row, col, color }) => {
+				const square = document.querySelector(`.grid-square[data-row='${row}'][data-col='${col}']`);
+				if (square) {
+					square.style.backgroundColor = color;
+					if (color !== "transparent") {
+						square.classList.add("selected"); // ✅ Marks previously clicked squares
+					}
+				}
+			});
+		}
 
-        function loadGridState() {
-            const gridState = JSON.parse(localStorage.getItem(`${region}_gridState`)) || [];
-            gridState.forEach(({ row, col, color }) => {
-                const square = document.querySelector(`.grid-square[data-row='${row}'][data-col='${col}']`);
-                if (square) {
-                    square.style.backgroundColor = color;
-                }
-            });
-        }
-		
-		
 		function loadSequence() {
 			const savedSequence = getLocalStorageItem(`${region}_guessSequence`, []);
 			guesses = getLocalStorageItem(`${region}_guessCount`, 0);
@@ -611,14 +676,17 @@
 				showModal(completedAnswer, completedFact, completedImage);
 			}
 		}
+		
+		window.addEventListener("load", () => {
+			loadGridState();  // ✅ Restore the grid on page load
+			loadSequence();   // ✅ Restore the guess sequence on page load
+		});
 
 		if (completedDate === today) {
-			loadGridState();
-			loadSequence();
-			displayModalFromStorage();
+			displayModalFromStorage(); // ✅ If game was already completed, show modal again
 			questionElement.textContent = regionQuestions.find(q => q.date === today)?.clue || "No question available.";
 			streakElement.textContent = `Streak: ${streak} - Average Guesses: ${totalGames > 0 ? (totalGuesses / totalGames).toFixed(2) : 0}`;
-			gridContainer.style.pointerEvents = "none";
+			gridContainer.style.pointerEvents = "none"; // ✅ Disable clicking if game is completed
 		} else {
 			const todaysQuestion = getTodaysQuestion(regionQuestions);
 			if (!regionQuestions || regionQuestions.length === 0) {
@@ -670,28 +738,33 @@
 		}
 
 
-
-		// Inside handleSquareClick, use the global 'guesses' variable:
 		async function handleSquareClick(row, col) {
 			const question = getTodaysQuestion(regionQuestions);
 			if (!question) return;
 
+			const clickedSquare = document.querySelector(`.grid-square[data-row='${row}'][data-col='${col}']`);
+
+			// ✅ Prevent duplicate clicks
+			if (clickedSquare.classList.contains("selected")) {
+				return;
+			}
+			clickedSquare.classList.add("selected");
+
+			// Calculate distance from correct square
 			const [correctRow, correctCol] = question.correctSquare;
 			const distance = Math.sqrt((row - correctRow) ** 2 + (col - correctCol) ** 2);
 			const maxDistance = Math.sqrt(5 ** 2 + 5 ** 2);
 			const intensity = 1 - (distance / maxDistance);
 
-			const clickedSquare = document.querySelector(`.grid-square[data-row='${row}'][data-col='${col}']`);
-
-			const r = Math.round(245 + (193 - 245) * intensity)
+			// Apply heatmap-style coloring
+			const r = Math.round(245 + (193 - 245) * intensity);
 			const g = Math.round(175 + (31 - 175) * intensity);
 			const b = Math.round(25 + (14 - 25) * intensity);
 
 			clickedSquare.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
 
-			// Increment the global `guesses` variable (no re-declaration here)
+			// ✅ Save guess sequence after each guess
 			guesses++;
-
 			if (distance > 2.9) {
 				guessSequence.push("🟨");
 			} else if (distance > 1.5) {
@@ -703,17 +776,26 @@
 			}
 
 			updateGuessSequenceDisplay();
-			saveGridState();
+			saveGridState(); // ✅ Save progress immediately
+			setLocalStorageItem(`${region}_guessSequence`, guessSequence);
+			setLocalStorageItem(`${region}_guessCount`, guesses);
 
+			// ✅ Check if the answer is correct
 			if (row === correctRow && col === correctCol) {
-				clickedSquare.style.backgroundColor = "#166534";
-				saveGridState();
+				clickedSquare.style.backgroundColor = "#166534"; // ✅ Final correct color
 
+				// ✅ Fetch city image before saving final state
 				const imageUrl = await fetchWikipediaImage(question.answer);
+
+				// ✅ Show the modal immediately
+				showModal(question.answer, question.fact, imageUrl);
+
+				// ✅ Save final game state AFTER the modal appears
 				streak++;
 				totalGuesses += guesses;
 				totalGames++;
 				completedDate = today;
+
 				setLocalStorageItem(`${region}_streak`, streak);
 				setLocalStorageItem(`${region}_totalGuesses`, totalGuesses);
 				setLocalStorageItem(`${region}_totalGames`, totalGames);
@@ -721,11 +803,8 @@
 				setLocalStorageItem(`${region}_completedAnswer`, question.answer);
 				setLocalStorageItem(`${region}_completedFact`, question.fact);
 				setLocalStorageItem(`${region}_completedImage`, imageUrl);
-				setLocalStorageItem(`${region}_guessSequence`, guessSequence); // No need for JSON.stringify; handled by the helper
-				setLocalStorageItem(`${region}_guessCount`, guesses);
 
-				streakElement.textContent = `Streak: ${streak} - Average Guesses: ${(totalGuesses / totalGames).toFixed(2)}`;
-				showModal(question.answer, question.fact, imageUrl);
+				// ✅ Ensure game is locked only after everything is saved
 				gridContainer.style.pointerEvents = "none";
 			}
 		}
@@ -767,7 +846,7 @@
 			const savedSequence = JSON.parse(localStorage.getItem(`${region}_guessSequence`)) || [];
 			const savedGuesses = parseInt(localStorage.getItem(`${region}_guessCount`)) || 0;
 
-			const shareText = `📍EuroHunter ${today_share}\n ${savedSequence.join('')} (${savedGuesses})`;
+			const shareText = `📍GlobeHunter ${today_share}\n ${savedSequence.join('')} (${savedGuesses})`;
 			const shareUrl = "index.html";
 			const fullUrl = `${window.location.origin}/${shareUrl}`;
 
@@ -778,7 +857,7 @@
 				try {
 					// Use the native sharing functionality for mobile devices
 					await navigator.share({
-						title: "EuroHunter",
+						title: "GlobeHunter",
 						text: shareText,
 						url: shareUrl,
 					});
